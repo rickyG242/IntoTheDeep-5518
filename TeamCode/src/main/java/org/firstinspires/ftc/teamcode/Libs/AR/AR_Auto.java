@@ -10,8 +10,8 @@ public class AR_Auto extends LinearOpMode{
     public static int GRAB = 2;
     public static int ACTIVE = 1;
     public static int START = 0; // Assuming Start-Position
-    public int currentState = 0;
-    public int lastState = 0;
+    public static int currentState = 0;
+    public static int lastState = 0;
 
     public static int point0 = 4;
     public static int point1 = 5;
@@ -23,21 +23,26 @@ public class AR_Auto extends LinearOpMode{
 
     public void runOpMode(){
         // Iterate the following loop through the sequence of states.
-        int iterator = 1;
-        while (opModeIsActive() && currentState < stateMachine.length) {
-            currentState = stateMachine[currentState];
-            // State Transition Method based on State Input
-            stateTransition(currentState);
+        int index=0;
+        while (opModeIsActive() && index < stateMachine.length) {
+            currentState = stateMachine[index];
+            // Activate State Method based on State Input, Triggering Corresponding State Actions
+            setState(currentState);
             // Update the robot's position
-            arm.updateArmPos();
-            currentState = currentState + iterator;
+            arm.activateArmState();
+            index++;
+            if (index >= stateMachine.length){
+                break;
+            }
             // Display telemetry for debugging
             telemetry.update();
             sleep(100); // Add a short delay to prevent too fast looping
         }
+        telemetry.addData("currentState", currentState);
+        telemetry.addData("lastState", lastState);
     }
 
-    public void stateTransition(int currentState){
+    public void setState(int currentState){
         if (currentState == START) {
             telemetry.addData("State", "START");
             arm.setArmStartPos();

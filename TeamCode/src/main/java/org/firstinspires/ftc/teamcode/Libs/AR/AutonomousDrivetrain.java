@@ -214,26 +214,26 @@ public class AutonomousDrivetrain {
         // Calculates and sets joint angles for setPoint0 state
         turnToHeading(iBot, TURN_SPEED, -90.0);
         driveStraight(iBot, DRIVE_SPEED, 20, 0.0);
-        if( currentState != AR_Auto.point0 ){
-            lastState = currentState;
-            currentState = AR_Auto.point0;}}
+        if (AR_Auto.currentState != AR_Auto.point0){
+            AR_Auto.lastState = AR_Auto.currentState;
+            AR_Auto.currentState = AR_Auto.point0;}}
 
     public void setPoint1(LinearOpMode iBot)
     {   // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         // Calculates and sets joint angles for setPoint1 state
         turnToHeading(iBot, TURN_SPEED, 180);
         driveStraight(iBot, DRIVE_SPEED, 40, 0.0);
-        if( currentState != AR_Auto.point1 ){
-            lastState = currentState;
-            currentState = AR_Auto.point1;}}
+        if (AR_Auto.currentState != AR_Auto.point1){
+            AR_Auto.lastState = AR_Auto.currentState;
+            AR_Auto.currentState = AR_Auto.point1;}}
 
     public void setPoint2(LinearOpMode iBot)
     {   // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         // Calculates and sets joint angles for setPoint2 state
         //Add stuff here
-        if( currentState != AR_Auto.point2 ){
-            lastState = currentState;
-            currentState = AR_Auto.point2;}}
+        if (AR_Auto.currentState != AR_Auto.point2){
+            AR_Auto.lastState = AR_Auto.currentState;
+            AR_Auto.currentState = AR_Auto.point2;}}
 
     /*
      * ====================================================================================================
