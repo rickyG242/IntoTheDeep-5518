@@ -20,7 +20,6 @@ public class AR_Auto extends LinearOpMode{
     AR_Arm_IK arm = new AR_Arm_IK(iBot);
     AutonomousDrivetrain drivetrain = new AutonomousDrivetrain(iBot);
 
-
     public void runOpMode(){
         // Iterate the following loop through the sequence of states.
         int iterator = 1;
@@ -29,6 +28,7 @@ public class AR_Auto extends LinearOpMode{
             // State Transition Method based on State Input
             stateTransition(currentState);
             // Update the robot's position
+            drivetrain.updateDrivetrain();
             arm.updateArmPos();
             currentState = currentState + iterator;
             // Display telemetry for debugging

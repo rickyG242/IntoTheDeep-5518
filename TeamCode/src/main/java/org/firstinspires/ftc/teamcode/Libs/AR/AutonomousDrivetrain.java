@@ -96,23 +96,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 public class AutonomousDrivetrain {
 
     // initiate all classes we may need
-
-
     /* Declare OpMode members. */
     private DcMotor         MTR_LF   = null;
     private DcMotor         MTR_LB   = null;
     private DcMotor         MTR_RF   = null;
     private DcMotor         MTR_RB   = null;
     private Servo SRV_LG, SRV_RG;
-
     private boolean rightTurn = false;
-
     // Dilip TODO:  Need to also create variable for Ramp and Gripper as required
-
-
     private IMU             imu         = null;      // Control/Expansion Hub IMU
-
-
     private double          headingError  = 0;
 
     // These variable are declared here (as class members) so they can be updated in various methods,
@@ -129,6 +121,8 @@ public class AutonomousDrivetrain {
 
     private int lastState = AR_Auto.point0;
     private int currentState = AR_Auto.point0;
+    private int drive;
+    private int turn;
 
     // Calculate the COUNTS_PER_INCH for your specific drive train.
     // Go to your motor vendor website to determine your motor's COUNTS_PER_MOTOR_REV
@@ -209,11 +203,14 @@ public class AutonomousDrivetrain {
         imu.resetYaw();
     }
 
+    public void updateDrivetrain(){
+        moveRobot(drive, turn);
+    }
     public void setPoint0(LinearOpMode iBot)
     {   // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         // Calculates and sets joint angles for setPoint0 state
-        turnToHeading(iBot, TURN_SPEED, -90.0);
-        driveStraight(iBot, DRIVE_SPEED, 20, 0.0);
+        drive = 20;
+        turn = -90;
         if( currentState != AR_Auto.point0 ){
             lastState = currentState;
             currentState = AR_Auto.point0;}}
@@ -221,8 +218,8 @@ public class AutonomousDrivetrain {
     public void setPoint1(LinearOpMode iBot)
     {   // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         // Calculates and sets joint angles for setPoint1 state
-        turnToHeading(iBot, TURN_SPEED, 180);
-        driveStraight(iBot, DRIVE_SPEED, 40, 0.0);
+        drive = 40;
+        turn = 180;
         if( currentState != AR_Auto.point1 ){
             lastState = currentState;
             currentState = AR_Auto.point1;}}
