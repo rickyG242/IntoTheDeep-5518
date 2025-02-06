@@ -36,11 +36,11 @@ public class AR_Arm_IK{
     public double deployTargetY=0; // Place-holding the deploy position y-coordinate
     private int lastState = AR_Auto.START; // Existing from prior states in AR_Arm
     private int currentState = AR_Auto.START; // Existing from prior states in AR_Arm
-    public AR_Arm_IK(LinearOpMode iBot){
+    public AR_Arm_IK(LinearOpMode iBot, boolean fuzzyLogicActiveJ1, boolean fuzzyLogicActiveJ2){
         // Based upon AR_Arm method from AR_Arm class
         this.bot = iBot;
-        this.joint1 = new AR_Joint(this.bot, "first_joint", P1, I1, D1, F1);
-        this.joint2 = new AR_Joint(this.bot, "second_joint", P2, I2, D2, F2);
+        this.joint1 = new AR_Joint(this.bot, "first_joint", P1, I1, D1, F1, fuzzyLogicActiveJ1);
+        this.joint2 = new AR_Joint(this.bot, "second_joint", P2, I2, D2, F2, fuzzyLogicActiveJ2);
         this.leftGripper = bot.hardwareMap.crservo.get("left_gripper");
         this.rightGripper = bot.hardwareMap.crservo.get("right_gripper");
         this.shoulderMotor = bot.hardwareMap.get(DcMotor.class, "first_joint");
@@ -124,5 +124,6 @@ public class AR_Arm_IK{
         leftGripper.setPower(0);
         rightGripper.setPower(0);
     }
+
 }
  

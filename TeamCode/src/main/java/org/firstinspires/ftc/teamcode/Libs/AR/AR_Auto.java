@@ -12,12 +12,13 @@ public class AR_Auto extends LinearOpMode{
     public static int START = 0; // Assuming Start-Position
     public static int currentState = 0;
     public static int lastState = 0;
-
     public static int point0 = 4;
     public static int point1 = 5;
     public static int point2 = 6;
+    public static boolean activateFuzzyTunerJoint1 = false;
+    public static boolean activateFuzzyTunerJoint2 = false;
     LinearOpMode iBot;
-    AR_Arm_IK arm = new AR_Arm_IK(iBot);
+    AR_Arm_IK arm = new AR_Arm_IK(iBot, activateFuzzyTunerJoint1, activateFuzzyTunerJoint2);
     AutonomousDrivetrain drivetrain = new AutonomousDrivetrain(iBot);
 
     public void runOpMode(){
@@ -25,17 +26,15 @@ public class AR_Auto extends LinearOpMode{
         int index=0;
         while (opModeIsActive() && index < stateMachine.length) {
             currentState = stateMachine[index];
-            // Activate State Method based on State Input, Triggering Corresponding State Actions
+            // Switches state (tracks lastState as well) to the current state and prepares currentState actions
             setState(currentState);
-            // Update the robot's position
-            arm.activateArmState();
             index++;
             if (index >= stateMachine.length){
                 break;
             }
-            drivetrain.updateDrivetrain();
-            arm.updateArmPos();
-            currentState = currentState + iterator;
+            // Manages State Activations triggered, to avoid unintentional errors by checking if states are meant for drivetrain or arm instead of both checking in.
+            if (currentState >=4){  drivetrain.activateDriveTrainState();   }
+            else if (currentState < 4){   arm.activateArmState(); }
             // Display telemetry for debugging
             telemetry.update();
             sleep(100); // Add a short delay to prevent too fast looping
@@ -43,7 +42,6 @@ public class AR_Auto extends LinearOpMode{
         telemetry.addData("currentState", currentState);
         telemetry.addData("lastState", lastState);
     }
-
     public void setState(int currentState){
         if (currentState == START) {
             telemetry.addData("State", "START");
@@ -89,4 +87,3 @@ public class AR_Auto extends LinearOpMode{
         }
     }
 }
- 

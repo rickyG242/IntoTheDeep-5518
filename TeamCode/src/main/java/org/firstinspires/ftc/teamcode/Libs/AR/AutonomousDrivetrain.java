@@ -203,7 +203,7 @@ public class AutonomousDrivetrain {
         imu.resetYaw();
     }
 
-    public void updateDrivetrain(){
+    public void activateDriveTrainState(){
         moveRobot(drive, turn);
     }
     public void setPoint0(LinearOpMode iBot)
@@ -211,26 +211,26 @@ public class AutonomousDrivetrain {
         // Calculates and sets joint angles for setPoint0 state
         drive = 20;
         turn = -90;
-        if( currentState != AR_Auto.point0 ){
-            lastState = currentState;
-            currentState = AR_Auto.point0;}}
+        if(AR_Auto.currentState != AR_Auto.point0 ){
+            AR_Auto.lastState = AR_Auto.currentState;
+            AR_Auto.currentState = AR_Auto.point0;}}
 
     public void setPoint1(LinearOpMode iBot)
     {   // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         // Calculates and sets joint angles for setPoint1 state
         drive = 40;
         turn = 180;
-        if( currentState != AR_Auto.point1 ){
-            lastState = currentState;
-            currentState = AR_Auto.point1;}}
+        if( AR_Auto.currentState != AR_Auto.point1 ){
+            AR_Auto.lastState = AR_Auto.currentState;
+            AR_Auto.currentState = AR_Auto.point1;}}
 
     public void setPoint2(LinearOpMode iBot)
     {   // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         // Calculates and sets joint angles for setPoint2 state
         //Add stuff here
-        if( currentState != AR_Auto.point2 ){
-            lastState = currentState;
-            currentState = AR_Auto.point2;}}
+        if(AR_Auto.currentState != AR_Auto.point2 ){
+            AR_Auto.lastState = AR_Auto.currentState;
+            AR_Auto.currentState = AR_Auto.point2;}}
 
     /*
      * ====================================================================================================
@@ -259,9 +259,7 @@ public class AutonomousDrivetrain {
 
         // Ensure that the OpMode is still active
         if (iBot.opModeIsActive()) {
-
             // Determine new target position, and pass to motor controller
-
             int moveCounts = (int)(distance * COUNTS_PER_INCH);
             leftFrontTarget = MTR_LF.getCurrentPosition() + moveCounts;
             leftBackTarget = MTR_LB.getCurrentPosition() + moveCounts;
@@ -275,34 +273,25 @@ public class AutonomousDrivetrain {
             MTR_RB.setTargetPosition(rightBackTarget);
 
             setDriveTrainMode(DcMotor.RunMode.RUN_TO_POSITION);
-
             // Set the required driving speed  (must be positive for RUN_TO_POSITION)
             // Start driving straight, and then enter the control loop
             maxDriveSpeed = Math.abs(maxDriveSpeed);
             moveRobot(maxDriveSpeed, 0);
-
             // keep looping while we are still active, and BOTH motors are running.
-            while (iBot.opModeIsActive() &&
-                    (MTR_LF.isBusy() && MTR_LB.isBusy() && MTR_RF.isBusy() && MTR_RB.isBusy())) {
-
+            while (iBot.opModeIsActive() && (MTR_LF.isBusy() && MTR_LB.isBusy() && MTR_RF.isBusy() && MTR_RB.isBusy())) {
                 // Determine required steering to keep on heading
                 turnSpeed = getSteeringCorrection(heading, P_DRIVE_GAIN);
-
                 // if driving in reverse, the motor correction also needs to be reversed
                 if (distance < 0)
                     turnSpeed *= -1.0;
-
                 // Apply the turning correction to the current driving speed.
                 moveRobot(driveSpeed, turnSpeed);
-
                 // Display drive status for the driver.
                 sendTelemetry(iBot,true);
             }
-
             // Stop all motion & Turn off RUN_TO_POSITION
             moveRobot(0, 0);
             setDriveTrainMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         }
     }
 

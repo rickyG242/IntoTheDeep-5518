@@ -19,7 +19,7 @@ public class AR_Joint
     private DcMotor jointMotor;
 
     // PID Controller for AR_Joint
-    private AR_PIDController newPID;
+    public static AR_PIDController newPID;
 
     /**
      * Constructor. Prepare a joint instance.
@@ -32,7 +32,7 @@ public class AR_Joint
      * @param iF variable for use with feed forward in PID controller.
      *
      */
-    public AR_Joint(LinearOpMode iBot, String iJointName, double iP, double iI, double iD, double iF)
+    public AR_Joint(LinearOpMode iBot, String iJointName, double iP, double iI, double iD, double iF, boolean fuzzyLogicActive)
     {
         this.bot = iBot;
 
@@ -40,9 +40,8 @@ public class AR_Joint
         this.jointMotor = bot.hardwareMap.dcMotor.get( iJointName );
         this.jointMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Not needed but left here for future additions if needed.
         this.jointMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);  // This tells the motor to run with raw power values and not to listen to the built in encoders. We can still get the data we need from the encoders.
-
         // Instantiate new PID Controller for this joint.
-        this.newPID = new AR_PIDController(this.bot, jointMotor, iJointName, iP, iI, iD, iF);
+        this.newPID = new AR_PIDController(this.bot, jointMotor, iJointName, iP, iI, iD, iF, fuzzyLogicActive);
     }
 
     /**
