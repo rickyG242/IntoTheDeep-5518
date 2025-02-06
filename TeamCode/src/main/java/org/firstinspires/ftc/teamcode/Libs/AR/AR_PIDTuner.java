@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name = "AR_PID_Autotone", group = "Linear Opmode")
-public class AR_PID_Autotone extends LinearOpMode {
+public class AR_PIDTuner extends LinearOpMode {
     private DcMotor shoulderMotor;
     private DcMotor elbowMotor;
     private PIDController controller;
