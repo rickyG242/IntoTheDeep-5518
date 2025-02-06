@@ -1,13 +1,15 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Libs.AR;
 
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "AutoPIDTuningArm", group = "Linear Opmode")
-public class AutoPIDTuningArm extends LinearOpMode {
+@Autonomous(name = "AR_PID_Autotone", group = "Linear Opmode")
+public class AR_PID_Autotone extends LinearOpMode {
     private DcMotor shoulderMotor;
     private DcMotor elbowMotor;
+    private PIDController controller;
     private static final double TARGET_POSITION_SHOULDER = 1000;
     private static final double TARGET_POSITION_ELBOW = 500;
 

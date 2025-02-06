@@ -29,7 +29,7 @@
 
 //First Draft
 
-package org.firstinspires.ftc.teamcode.Auto;
+package org.firstinspires.ftc.teamcode.Libs.AR;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -93,7 +93,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 @Autonomous(name="SimpleAuto", group="Robot")
 //@Disabled
-public class SimpleAuto extends LinearOpMode {
+public class AutonomousDrivetrain {
 
     // initiate all classes we may need
 
@@ -127,6 +127,9 @@ public class SimpleAuto extends LinearOpMode {
     private int     rightFrontTarget   = 0;
     private int     rightBackTarget   = 0;
 
+    private int lastState = AR_Auto.point0;
+    private int currentState = AR_Auto.point0;
+
     // Calculate the COUNTS_PER_INCH for your specific drive train.
     // Go to your motor vendor website to determine your motor's COUNTS_PER_MOTOR_REV
     // For external drive gearing, set DRIVE_GEAR_REDUCTION as needed.
@@ -152,15 +155,15 @@ public class SimpleAuto extends LinearOpMode {
     static final double     P_TURN_GAIN            = 0.02;     // Larger is more responsive, but also less stable
     static final double     P_DRIVE_GAIN           = 0.03;     // Larger is more responsive, but also less stable
 
-    @Override
-    public void runOpMode() {
+    //@Override
+    public AutonomousDrivetrain(LinearOpMode iBot) {
 
         // Initialize the objects and drive system variables.
 
-        MTR_LF  = hardwareMap.get(DcMotor.class, "left_front_mtr");
-        MTR_LB  = hardwareMap.get(DcMotor.class, "left_back_mtr");
-        MTR_RF  = hardwareMap.get(DcMotor.class, "right_front_mtr");
-        MTR_RB  = hardwareMap.get(DcMotor.class, "right_back_mtr");
+        MTR_LF  = iBot.hardwareMap.get(DcMotor.class, "left_front_mtr");
+        MTR_LB  = iBot.hardwareMap.get(DcMotor.class, "left_back_mtr");
+        MTR_RF  = iBot.hardwareMap.get(DcMotor.class, "right_front_mtr");
+        MTR_RB  = iBot.hardwareMap.get(DcMotor.class, "right_back_mtr");
         //Dilip TODO:  Initialize and set for Ramp and Gripper as required
         //SRV_LG = hardwareMap.get(Servo.class, "claw");
         //SRV_RG = hardwareMap.get(Servo.class, "wrist");
@@ -184,43 +187,53 @@ public class SimpleAuto extends LinearOpMode {
 
         // Now initialize the IMU with this mounting orientation
         // This sample expects the IMU to be in a REV Hub and named "imu".
-        imu = hardwareMap.get(IMU.class, "imu");
+        imu = iBot.hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(orientationOnRobot));
 
         // Ensure the robot is stationary.  Reset the encoders and set the motors to BRAKE mode
         setDriveTrainMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setDriveTrainZeroPower(DcMotor.ZeroPowerBehavior.FLOAT);
 
-
-
         // Wait for the game to start (Display Gyro value while waiting)
-        while (opModeInInit()) {
-            if(gamepad1.a){
+        while (iBot.opModeInInit()) {
+            if(iBot.gamepad1.a){
                 rightTurn = true;
             }
-            telemetry.addData("Right Turn:", rightTurn);
-            telemetry.addData(">", "Robot Heading = %4.0f", getHeading());
-            telemetry.update();
+            iBot.telemetry.addData("Right Turn:", rightTurn);
+            iBot.telemetry.addData(">", "Robot Heading = %4.0f", getHeading());
+            iBot.telemetry.update();
         }
 
         // Set the encoders for closed loop speed control, and reset the heading.
         setDriveTrainMode(DcMotor.RunMode.RUN_USING_ENCODER);
         imu.resetYaw();
-
-        if(rightTurn) {
-            turnToHeading(TURN_SPEED, 90.0);
-        }
-        else {
-            turnToHeading(TURN_SPEED, -90.0);
-        }
-        driveStraight(DRIVE_SPEED, 20, 0.0);
-
-
-        // Dilip TOD - ASsume this is where we park
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
-        sleep(1000);  // Pause to display last telemetry message.
     }
+
+    public void setPoint0(LinearOpMode iBot)
+    {   // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
+        // Calculates and sets joint angles for setPoint0 state
+        turnToHeading(iBot, TURN_SPEED, -90.0);
+        driveStraight(iBot, DRIVE_SPEED, 20, 0.0);
+        if( currentState != AR_Auto.point0 ){
+            lastState = currentState;
+            currentState = AR_Auto.point0;}}
+
+    public void setPoint1(LinearOpMode iBot)
+    {   // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
+        // Calculates and sets joint angles for setPoint1 state
+        turnToHeading(iBot, TURN_SPEED, 180);
+        driveStraight(iBot, DRIVE_SPEED, 40, 0.0);
+        if( currentState != AR_Auto.point1 ){
+            lastState = currentState;
+            currentState = AR_Auto.point1;}}
+
+    public void setPoint2(LinearOpMode iBot)
+    {   // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
+        // Calculates and sets joint angles for setPoint2 state
+        //Add stuff here
+        if( currentState != AR_Auto.point2 ){
+            lastState = currentState;
+            currentState = AR_Auto.point2;}}
 
     /*
      * ====================================================================================================
@@ -243,12 +256,12 @@ public class SimpleAuto extends LinearOpMode {
      *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
      *                   If a relative angle is required, add/subtract from the current robotHeading.
      */
-    public void driveStraight(double maxDriveSpeed,
+    public void driveStraight(LinearOpMode iBot, double maxDriveSpeed,
                               double distance,
                               double heading) {
 
         // Ensure that the OpMode is still active
-        if (opModeIsActive()) {
+        if (iBot.opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
 
@@ -272,7 +285,7 @@ public class SimpleAuto extends LinearOpMode {
             moveRobot(maxDriveSpeed, 0);
 
             // keep looping while we are still active, and BOTH motors are running.
-            while (opModeIsActive() &&
+            while (iBot.opModeIsActive() &&
                     (MTR_LF.isBusy() && MTR_LB.isBusy() && MTR_RF.isBusy() && MTR_RB.isBusy())) {
 
                 // Determine required steering to keep on heading
@@ -286,7 +299,7 @@ public class SimpleAuto extends LinearOpMode {
                 moveRobot(driveSpeed, turnSpeed);
 
                 // Display drive status for the driver.
-                sendTelemetry(true);
+                sendTelemetry(iBot,true);
             }
 
             // Stop all motion & Turn off RUN_TO_POSITION
@@ -310,12 +323,12 @@ public class SimpleAuto extends LinearOpMode {
      *              0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
      *              If a relative angle is required, add/subtract from current heading.
      */
-    public void turnToHeading(double maxTurnSpeed, double heading) {
+    public void turnToHeading(LinearOpMode iBot, double maxTurnSpeed, double heading) {
         // Run getSteeringCorrection() once to pre-calculate the current error
         getSteeringCorrection(heading, P_DRIVE_GAIN);
 
         // keep looping while we are still active, and not on heading.
-        while (opModeIsActive() && (Math.abs(headingError) > HEADING_THRESHOLD)) {
+        while (iBot.opModeIsActive() && (Math.abs(headingError) > HEADING_THRESHOLD)) {
 
             // Determine required steering to keep on heading
             turnSpeed = getSteeringCorrection(heading, P_TURN_GAIN);
@@ -327,7 +340,7 @@ public class SimpleAuto extends LinearOpMode {
             moveRobot(0, turnSpeed);
 
             // Display drive status for the driver.
-            sendTelemetry(false);
+            sendTelemetry(iBot,false);
         }
 
         // Stop all motion;
@@ -347,12 +360,12 @@ public class SimpleAuto extends LinearOpMode {
      *                   If a relative angle is required, add/subtract from current heading.
      * @param holdTime   Length of time (in seconds) to hold the specified heading.
      */
-    public void holdHeading(double maxTurnSpeed, double heading, double holdTime) {
+    public void holdHeading(LinearOpMode iBot, double maxTurnSpeed, double heading, double holdTime) {
         ElapsedTime holdTimer = new ElapsedTime();
         holdTimer.reset();
 
         // keep looping while we have time remaining.
-        while (opModeIsActive() && (holdTimer.time() < holdTime)) {
+        while (iBot.opModeIsActive() && (holdTimer.time() < holdTime)) {
             // Determine required steering to keep on heading
             turnSpeed = getSteeringCorrection(heading, P_TURN_GAIN);
 
@@ -363,7 +376,7 @@ public class SimpleAuto extends LinearOpMode {
             moveRobot(0, turnSpeed);
 
             // Display drive status for the driver.
-            sendTelemetry(false);
+            sendTelemetry(iBot,false);
         }
 
         // Stop all motion;
@@ -425,21 +438,21 @@ public class SimpleAuto extends LinearOpMode {
      *
      * @param straight  Set to true if we are driving straight, and the encoder positions should be included in the telemetry.
      */
-    private void sendTelemetry(boolean straight) {
+    private void sendTelemetry(LinearOpMode iBot, boolean straight) {
         //telemetry data to use to fine tune
         if (straight) {
-            telemetry.addData("Motion", "Drive Straight");
-            telemetry.addData("Target Pos L:R",  "%7d:%7d:%7d:%7d",      leftFrontTarget,  leftBackTarget, rightFrontTarget, rightBackTarget);
-            telemetry.addData("Actual Pos L:R",  "%7d:%7d:%7d:%7d",      MTR_LF.getCurrentPosition(), MTR_LB.getCurrentPosition(),
+            iBot.telemetry.addData("Motion", "Drive Straight");
+            iBot.telemetry.addData("Target Pos L:R",  "%7d:%7d:%7d:%7d",      leftFrontTarget,  leftBackTarget, rightFrontTarget, rightBackTarget);
+            iBot.telemetry.addData("Actual Pos L:R",  "%7d:%7d:%7d:%7d",      MTR_LF.getCurrentPosition(), MTR_LB.getCurrentPosition(),
                     MTR_RF.getCurrentPosition(), MTR_RB.getCurrentPosition());
         } else {
-            telemetry.addData("Motion", "Turning");
+            iBot.telemetry.addData("Motion", "Turning");
         }
 
-        telemetry.addData("Heading- Target : Current", "%5.2f : %5.0f", targetHeading, getHeading());
-        telemetry.addData("Error  : Steer Pwr",  "%5.1f : %5.1f", headingError, turnSpeed);
-        telemetry.addData("Wheel Speeds L : R", "%5.2f : %5.2f", leftSpeed, rightSpeed);
-        telemetry.update();
+        iBot.telemetry.addData("Heading- Target : Current", "%5.2f : %5.0f", targetHeading, getHeading());
+        iBot.telemetry.addData("Error  : Steer Pwr",  "%5.1f : %5.1f", headingError, turnSpeed);
+        iBot.telemetry.addData("Wheel Speeds L : R", "%5.2f : %5.2f", leftSpeed, rightSpeed);
+        iBot.telemetry.update();
     }
 
     /**

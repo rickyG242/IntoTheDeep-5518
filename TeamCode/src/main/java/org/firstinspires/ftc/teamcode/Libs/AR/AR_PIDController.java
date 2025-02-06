@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.Libs.AR;
 
-import android.util.Log;
-
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.teamcode.Libs.AR.Archive.AR_Arm;
 
 /**
  * This class creates a PID Controller to use with each joint.
