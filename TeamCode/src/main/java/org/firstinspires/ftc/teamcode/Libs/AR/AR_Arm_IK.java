@@ -67,10 +67,10 @@ public class AR_Arm_IK{
         angle2 = (int) elbowAngle;
     }
 
-    public void updateArmPos()
+    public void activateArmState()
     {   // Arm should be tested before adding that code
-        this.joint1.moveJoint(angle1, currentState, lastState);
-        this.joint2.moveJoint(angle2, currentState, lastState);
+        this.joint1.moveJoint(angle1, AR_Auto.currentState, AR_Auto.lastState);
+        this.joint2.moveJoint(angle2, AR_Auto.currentState, AR_Auto.lastState);
     }
     public void setArmCustomPos(int firstJoint, int secondJoint )
     {   // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
@@ -78,52 +78,48 @@ public class AR_Arm_IK{
         angle2 = secondJoint;}
 
     public void setArmDeployPos() {
-        /* Rest of the methods follow the flow of AR_Arm
-        Calculates and sets appropriate angles
-        based on current state's x and y coordinates
-        */
+        // Rest of the methods follow the flow of AR_Arm: calculates and sets appropriate angles based on current state's x and y coordinates
         // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         calculateJointAngles(deployTargetX, deployTargetY);
         if (currentState != AR_Auto.DEPLOY) {
-            lastState = currentState;
-            currentState = AR_Auto.DEPLOY;
+            AR_Auto.lastState = AR_Auto.currentState;
+            AR_Auto.currentState = AR_Auto.DEPLOY;
         }
     }
-
 
     public void setArmGrabPos()
     {   // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         // Calculates and sets joint angles for GRAB state
         calculateJointAngles(grabTargetX, grabTargetY);
-        if( currentState != AR_Auto.GRAB ){
-            lastState = currentState;
-            currentState = AR_Auto.GRAB;}}
+        if(AR_Auto.currentState != AR_Auto.GRAB ){
+            AR_Auto.lastState = AR_Auto.currentState;
+            AR_Auto.currentState = AR_Auto.GRAB;}}
     public void setArmActivePos()
     {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         // Calculates and sets joint angles for ACTIVE state
         calculateJointAngles(activeTargetX, activeTargetY);
-        if( currentState != AR_Auto.ACTIVE ) {
-            lastState = currentState;
-            currentState = AR_Auto.ACTIVE;}}
+        if(AR_Auto.currentState != AR_Auto.ACTIVE ) {
+            AR_Auto.lastState = AR_Auto.currentState;
+            AR_Auto.currentState = AR_Auto.ACTIVE;}}
     public void setArmStartPos()
     {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         // Sets each joint ang. to the rest variables defined from AR_Arm
         angle1 = startJointAngle1;
         angle2 = startJointAngle2;
-        if (currentState != AR_Auto.START) {
-            lastState = currentState;
-            currentState = AR_Auto.START;}}
-    public void grab( )
+        if (AR_Auto.currentState != AR_Auto.START) {
+            AR_Auto.lastState = AR_Auto.currentState;
+            AR_Auto.currentState = AR_Auto.START;}}
+    public void grab()
     {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         leftGripper.setPower(1);
         rightGripper.setPower(1);
     }
-    public void drop( )
+    public void drop()
     {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         leftGripper.setPower(-1);
         rightGripper.setPower(-1);
     }
-    public void rest( )
+    public void rest()
     {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         leftGripper.setPower(0);
         rightGripper.setPower(0);

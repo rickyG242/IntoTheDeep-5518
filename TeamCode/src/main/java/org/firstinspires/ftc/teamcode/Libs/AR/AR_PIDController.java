@@ -76,10 +76,10 @@ public class AR_PIDController
         double armPos = 0;
 
         // Are we working on the first joint or second?
-        if( this.jointName.equals("first_joint")) {
-            armPos = this.motor.getCurrentPosition( ) + ( AR_Arm.FIRST_JOINT_REST_ANGLE * ticksPerDegree );       // armPos is in Ticks
+        if(this.jointName.equals("first_joint")) {
+            armPos = this.motor.getCurrentPosition( ) + ( AR_Arm_IK.startJointAngle1 * ticksPerDegree );       // armPos is in Ticks
         } else {
-            armPos = this.motor.getCurrentPosition( );    // armPos is in Ticks
+            armPos = this.motor.getCurrentPosition( ) + ( AR_Arm_IK.startJointAngle2 * ticksPerDegree );    // armPos is in Ticks
         }
 
         // Original Method
@@ -90,14 +90,13 @@ public class AR_PIDController
 
         // Determine if there are any special conditions required for power output.
         if ( (this.jointName.equals("first_joint")) &&  // First Joint Only.
-                (iLastState == AR_Arm.DEPLOY) &&   // Has to be leaving the DEPLOY state.
+                (iLastState == AR_Auto.DEPLOY) &&   // Has to be leaving the DEPLOY state.
                 ((armPos / ticksPerDegree) < target - 10)) // Can only be in the initial decent. We need to turn this off for maintaining position.
         {
             power = power * 0.1;       // Throttle power back for arm decent.
         }
 
         this.motor.setPower( power );
-
         this.bot.telemetry.addData("Power"," (" + this.jointName + ") " + power ); // Degrees
         this.bot.telemetry.addData("Pos(Ticks)", " (" + this.jointName + ") " + armPos ); // Degrees
         this.bot.telemetry.addData("Pos", " (" + this.jointName + ") " + armPos / ticksPerDegree ); // Degrees
