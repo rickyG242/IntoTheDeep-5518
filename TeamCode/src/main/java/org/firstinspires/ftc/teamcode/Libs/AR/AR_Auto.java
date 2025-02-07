@@ -4,86 +4,41 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-public class AR_Auto extends LinearOpMode{
+public class AR_Auto extends LinearOpMode {
+    public static final int DEPLOY = 3, GRAB = 2, ACTIVE = 1, START = 0, point0 = 4, point1 = 5, point2 = 6;
+    public static int currentState = 0, lastState = 0;
     private int[] stateMachine = {START, ACTIVE, point0, DEPLOY, ACTIVE, point1};
-    public static int DEPLOY = 3;
-    public static int GRAB = 2;
-    public static int ACTIVE = 1;
-    public static int START = 0; // Assuming Start-Position
-    public static int currentState = 0;
-    public static int lastState = 0;
-    public static int point0 = 4;
-    public static int point1 = 5;
-    public static int point2 = 6;
-    public static boolean activateFuzzyTunerJoint1 = false;
-    public static boolean activateFuzzyTunerJoint2 = false;
+    public static boolean activateFuzzyTunerJoint1 = false, activateFuzzyTunerJoint2 = false;
     LinearOpMode iBot;
     AR_Arm_IK arm = new AR_Arm_IK(iBot, activateFuzzyTunerJoint1, activateFuzzyTunerJoint2);
     AutonomousDrivetrain drivetrain = new AutonomousDrivetrain(iBot);
 
-    public void runOpMode(){
-        // Iterate the following loop through the sequence of states.
-        int index=0;
+    public void runOpMode() {
+        int index = 0;
         while (opModeIsActive() && index < stateMachine.length) {
             currentState = stateMachine[index];
-            // Switches state (tracks lastState as well) to the current state and prepares currentState actions
             setState(currentState);
             index++;
-            if (index >= stateMachine.length){
-                break;
-            }
-            // Manages State Activations triggered, to avoid unintentional errors by checking if states are meant for drivetrain or arm instead of both checking in.
-            if (currentState >=4){  drivetrain.activateDriveTrainState();   }
-            else if (currentState < 4){   arm.activateArmState(); }
-            // Display telemetry for debugging
+            if (index >= stateMachine.length) break;
+            if (currentState >= 4) drivetrain.activateDriveTrainState();
+            else arm.activateArmState();
             telemetry.update();
-            sleep(100); // Add a short delay to prevent too fast looping
+            sleep(100);
         }
         telemetry.addData("currentState", currentState);
         telemetry.addData("lastState", lastState);
     }
-    public void setState(int currentState){
-        if (currentState == START) {
-            telemetry.addData("State", "START");
-            arm.setArmStartPos();
-            // Transition to ACTIVE after startup
-        }
-        if (currentState == ACTIVE) {
-            telemetry.addData("State", "ACTIVE");
-            // TODO: Add logic here to determine if the arm should go to GRAB or DEPLOY
-            arm.setArmActivePos();
-            // Example: transition to GRAB after being active
-        }
-        if (currentState == GRAB) {
-            telemetry.addData("State", "GRAB");
-            arm.grab(); // Start gripping
-            arm.setArmGrabPos();
-            // Move to DEPLOY position after grabbing
-        }
-        if (currentState == DEPLOY) {
-            telemetry.addData("State", "DEPLOY");
-            // TODO: Deploy or perform actions like releasing the object
-            arm.drop(); // Drop object or complete the task
-            arm.setArmDeployPos();
-            // Return to START position after task is complete
-        }
-        if (currentState == point0) {
-            telemetry.addData("State", "point0");
-            drivetrain.setPoint0(iBot);
-            // Transition to ACTIVE after startup
-        }
-        if (currentState == point1) {
-            telemetry.addData("State", "point1");
-            // TODO: Add logic here to determine if the arm should go to GRAB or DEPLOY
-            drivetrain.setPoint1(iBot);
-            telemetry.addData("Path", "Complete");
-            telemetry.update();
-            // Example: transition to GRAB after being active
-        }
-        if (currentState == point2) {
-            telemetry.addData("State", "point2");
-            drivetrain.setPoint2(iBot);
-            // Move to DEPLOY position after grabbing
+
+    public void setState(int currentState) {
+        switch (currentState) {
+            case START: telemetry.addData("State", "START"); arm.setArmStartPos(); break;
+            case ACTIVE: telemetry.addData("State", "ACTIVE"); arm.setArmActivePos(); break;
+            case GRAB: telemetry.addData("State", "GRAB"); arm.grab(); arm.setArmGrabPos(); break;
+            case DEPLOY: telemetry.addData("State", "DEPLOY"); arm.drop(); arm.setArmDeployPos(); break;
+            case point0: telemetry.addData("State", "point0"); drivetrain.setPoint0(iBot); break;
+            case point1: telemetry.addData("State", "point1"); drivetrain.setPoint1(iBot); telemetry.addData("Path", "Complete"); telemetry.update(); break;
+            case point2: telemetry.addData("State", "point2"); drivetrain.setPoint2(iBot); break;
+            default: telemetry.addData("State", "Unknown"); break;
         }
     }
 }
