@@ -26,14 +26,18 @@ public class AR_Arm_IK{
     public static double F1 = 0.05;
     public static double P2 = 0.001, I2 = 0.05, D2 = 0.0001;
     public static double F2 = 0.05;
-    public static int startJointAngle1 = -40; //degrees
-    public static int startJointAngle2 = 0; //degrees
-    public double activeTargetX=0; // Place-holding the active position x-coordinate
-    public double activeTargetY=0; // Place-holding the active position y-coordinate
-    public double grabTargetX=0; // Place-holding the grab position x-coordinate
-    public double grabTargetY=0; // Place-holding the grab position y-coordinate
-    public double deployTargetX=0; // Place-holding the deploy position x-coordinate
-    public double deployTargetY=0; // Place-holding the deploy position y-coordinate
+    static double activeX = 17;
+    static double activeY = 6;
+
+    static double grabX = 30;
+    static double grabY = 14;
+    public double deployX=2; // Place-holding the deploy position x-coordinate
+    public double deployY=-35; // Place-holding the deploy position y-coordinate
+
+    public double deployXLow=6; // Place-holding the deploy position x-coordinate
+    public double deployYLow=-37; // Place-holding the deploy position y-coordinate
+    static int startJoint1 = -40;
+    static int startJoint2 = 0;
     private int lastState = AR_Auto.START; // Existing from prior states in AR_Arm
     private int currentState = AR_Auto.START; // Existing from prior states in AR_Arm
     public AR_Arm_IK(LinearOpMode iBot, boolean fuzzyLogicActiveJ1, boolean fuzzyLogicActiveJ2){
@@ -43,8 +47,6 @@ public class AR_Arm_IK{
         this.joint2 = new AR_Joint(this.bot, "second_joint", P2, I2, D2, F2, fuzzyLogicActiveJ2);
         this.leftGripper = bot.hardwareMap.crservo.get("left_gripper");
         this.rightGripper = bot.hardwareMap.crservo.get("right_gripper");
-        this.shoulderMotor = bot.hardwareMap.get(DcMotor.class, "first_joint");
-        this.elbowMotor = bot.hardwareMap.get(DcMotor.class, "second_joint");
     }
 
     public void calculateJointAngles(double x, double y) {
@@ -80,7 +82,7 @@ public class AR_Arm_IK{
     public void setArmDeployPos() {
         // Rest of the methods follow the flow of AR_Arm: calculates and sets appropriate angles based on current state's x and y coordinates
         // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
-        calculateJointAngles(deployTargetX, deployTargetY);
+        calculateJointAngles(deployX, deployY);
         if (currentState != AR_Auto.DEPLOY) {
             AR_Auto.lastState = AR_Auto.currentState;
             AR_Auto.currentState = AR_Auto.DEPLOY;
@@ -90,22 +92,22 @@ public class AR_Arm_IK{
     public void setArmGrabPos()
     {   // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         // Calculates and sets joint angles for GRAB state
-        calculateJointAngles(grabTargetX, grabTargetY);
+        calculateJointAngles(grabX, grabY);
         if(AR_Auto.currentState != AR_Auto.GRAB ){
             AR_Auto.lastState = AR_Auto.currentState;
             AR_Auto.currentState = AR_Auto.GRAB;}}
     public void setArmActivePos()
     {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         // Calculates and sets joint angles for ACTIVE state
-        calculateJointAngles(activeTargetX, activeTargetY);
+        calculateJointAngles(activeX, activeY);
         if(AR_Auto.currentState != AR_Auto.ACTIVE ) {
             AR_Auto.lastState = AR_Auto.currentState;
             AR_Auto.currentState = AR_Auto.ACTIVE;}}
     public void setArmStartPos()
     {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         // Sets each joint ang. to the rest variables defined from AR_Arm
-        angle1 = startJointAngle1;
-        angle2 = startJointAngle2;
+        angle1 = startJoint1;
+        angle2 = startJoint2;
         if (AR_Auto.currentState != AR_Auto.START) {
             AR_Auto.lastState = AR_Auto.currentState;
             AR_Auto.currentState = AR_Auto.START;}}

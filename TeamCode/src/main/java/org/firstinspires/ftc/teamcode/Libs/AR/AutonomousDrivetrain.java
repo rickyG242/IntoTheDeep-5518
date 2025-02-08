@@ -91,8 +91,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="SimpleAuto", group="Robot")
-//@Disabled
 public class AutonomousDrivetrain {
 
     // initiate all classes we may need

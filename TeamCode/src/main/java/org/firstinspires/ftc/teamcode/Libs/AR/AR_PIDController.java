@@ -70,9 +70,9 @@ public class AR_PIDController {
         this.controller.setPID(p, i, d);
         double armPos = 0;
         if (this.jointName.equals("first_joint")) {
-            armPos = this.motor.getCurrentPosition() + (AR_Arm_IK.startJointAngle1 * ticksPerDegree); // armPos is in Ticks
+            armPos = this.motor.getCurrentPosition() + (AR_Arm_IK.startJoint1 * ticksPerDegree); // armPos is in Ticks
         } else if (this.jointName.equals("second_joint")) {
-            armPos = this.motor.getCurrentPosition() + (AR_Arm_IK.startJointAngle2 * ticksPerDegree); // armPos is in Ticks
+            armPos = this.motor.getCurrentPosition() + (AR_Arm_IK.startJoint2 * ticksPerDegree); // armPos is in Ticks
         }
         double pid = this.controller.calculate(armPos, target * ticksPerDegree);  // target is in degrees
         double ff = Math.cos(Math.toRadians(target * ticksPerDegree)) * f;  // Feedforward

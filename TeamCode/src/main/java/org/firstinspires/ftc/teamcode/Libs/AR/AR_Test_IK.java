@@ -1,15 +1,12 @@
 package org.firstinspires.ftc.teamcode.Libs.AR;
-// Jankly Joe
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name = "AR_Test_IK", group = "Linear Opmode")
 
-@Config
 public class AR_Test_IK extends LinearOpMode {
     // Hardware variables
     private DcMotor shoulderMotor;
@@ -19,36 +16,29 @@ public class AR_Test_IK extends LinearOpMode {
     private final double L1 = 22.0; // Length of first arm segment
     private final double L2 = 16.0; // Length of second arm segment
 
-    double targetX = 33.0;
-    double targetY = -15.0;
+    static double activeX = 17;
+    static double activeY = 6;
 
-    static double targetX1 = 31;
-    static double targetY1 = 1;
+    static double grabX = 30;
+    static double grabY = 14;
+    public double deployX=2; // Place-holding the deploy position x-coordinate
+    public double deployY=-35; // Place-holding the deploy position y-coordinate
 
-    static double targetX2 = 31;
-    static double targetY2 = 1;
-
-    static double targetX3 = 31;
-    static double targetY3 = 1;
-
-    static double targetX4 = 31;
-    static double targetY4 = 1;
-
+    public double deployXLow=6; // Place-holding the deploy position x-coordinate
+    public double deployYLow=-37; // Place-holding the deploy position y-coordinate
     static int startJoint1 = -40;
     static int startJoint2 = 0;
+    private CRServo leftGripper;
+    private CRServo rightGripper;
 
     @Override
 
     public void runOpMode() {
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        TelemetryPacket packet = new TelemetryPacket();
-        packet.put("targetX", 40);
-        dashboard.sendTelemetryPacket(packet);
-
-
         // Initialize motors
         shoulderMotor = hardwareMap.get(DcMotor.class, "first_joint");
         elbowMotor = hardwareMap.get(DcMotor.class, "second_joint");
+        leftGripper = hardwareMap.crservo.get("left_gripper");
+        rightGripper = hardwareMap.crservo.get("right_gripper");
         // Wait for the start button
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -57,15 +47,20 @@ public class AR_Test_IK extends LinearOpMode {
 
         while (opModeIsActive()) {
             // Set up the arm to the start position from its folded form
-            calculateJointAngles(shoulderMotor, elbowMotor, targetX, targetY);
-            sleep(500); // Optional, to allow slight pause
-            calculateJointAngles(shoulderMotor, elbowMotor, targetX1, targetY1);
+            calculateJointAngles(shoulderMotor, elbowMotor, grabX, grabY);
+            sleep(500);
+            calculateJointAngles(shoulderMotor, elbowMotor, activeX, activeY);
+            sleep(500);
+            calculateJointAngles(shoulderMotor, elbowMotor, deployX, deployY);
+            sleep(500);
+            drop();
+            sleep(3000);
 
 
             // Calculate joint angles using inverse kinematics
                 // Display telemetry
-                telemetry.addData("Target X", targetX);
-                telemetry.addData("Target Y", targetY);
+                telemetry.addData("Target X", activeX);
+                telemetry.addData("Target Y", activeY);
                 telemetry.update();
 
         }
@@ -98,8 +93,8 @@ public class AR_Test_IK extends LinearOpMode {
         // Move the motors to the calculated angle
         moveMotorToAngle(shoulderMotor, shoulderAngle);
         moveMotorToAngle(elbowMotor, elbowAngle);
+        sleep(3000);
     }
-
     private void moveMotorToAngle(DcMotor motor, double angle) {
 
         // Convert the angle to encoder counts (adjust based on motor setup)
@@ -111,6 +106,22 @@ public class AR_Test_IK extends LinearOpMode {
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         motor.setPower(0.5); // Set motor power
+    }
+
+    public void grab()
+    {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
+        leftGripper.setPower(-1);
+        rightGripper.setPower(-1);
+    }
+    public void drop()
+    {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
+        leftGripper.setPower(1);
+        rightGripper.setPower(1);
+    }
+    public void rest()
+    {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
+        leftGripper.setPower(0);
+        rightGripper.setPower(0);
     }
 }
 

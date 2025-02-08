@@ -76,8 +76,8 @@ public class AR_Arm
         this.bot = iBot;
 
         // Declare instances of the two joints.
-        this.jointFirst = new AR_Joint(this.bot, "first_joint", P1, I1, D1, F1);
-        this.jointSecond = new AR_Joint(this.bot, "second_joint", P2, I2, D2, F2);
+        this.jointFirst = new AR_Joint(this.bot, "first_joint", P1, I1, D1, F1, false);
+        this.jointSecond = new AR_Joint(this.bot, "second_joint", P2, I2, D2, F2,false);
         this.leftGripper = bot.hardwareMap.crservo.get("left_gripper");
         this.rightGripper = bot.hardwareMap.crservo.get("right_gripper");
     }

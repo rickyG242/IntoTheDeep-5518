@@ -13,13 +13,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  */
 public class AR_Joint
 {
-    private LinearOpMode bot;
-
     // Joint Motor
     private DcMotor jointMotor;
 
     // PID Controller for AR_Joint
-    public static AR_PIDController newPID;
+    public AR_PIDController newPID;
 
     /**
      * Constructor. Prepare a joint instance.
@@ -34,14 +32,12 @@ public class AR_Joint
      */
     public AR_Joint(LinearOpMode iBot, String iJointName, double iP, double iI, double iD, double iF, boolean fuzzyLogicActive)
     {
-        this.bot = iBot;
-
         // Attach variable to motor hardware and set up.
-        this.jointMotor = bot.hardwareMap.dcMotor.get( iJointName );
+        this.jointMotor = iBot.hardwareMap.dcMotor.get(iJointName);
         this.jointMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Not needed but left here for future additions if needed.
         this.jointMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);  // This tells the motor to run with raw power values and not to listen to the built in encoders. We can still get the data we need from the encoders.
         // Instantiate new PID Controller for this joint.
-        this.newPID = new AR_PIDController(this.bot, jointMotor, iJointName, iP, iI, iD, iF, fuzzyLogicActive);
+        this.newPID = new AR_PIDController(iBot, jointMotor, iJointName, iP, iI, iD, iF, fuzzyLogicActive);
     }
 
     /**
