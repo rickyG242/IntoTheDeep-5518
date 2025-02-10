@@ -60,7 +60,7 @@ public class AR_PIDController {
     /**
      * This function takes a target value and moves the joint to that position.
      */
-    public void loop(int target, int iCurrentState, int iLastState) { // Input in degrees
+    public void loop(double target, int iCurrentState, int iLastState) { // Input in degrees
         if (fuzzyLogicActive) {
             double error = target - (motor.getCurrentPosition() / ticksPerDegree);  // Current error
             double errorRate = error - previousError;  // Calculate error rate

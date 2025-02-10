@@ -45,8 +45,12 @@ public class AR_Joint
      *
      * @param target degree angle to move the joint to.
      */
-    public void moveJoint(int target, int iCurrentState, int iLastState)
+    public void moveJoint(double target, int iCurrentState, int iLastState)
     {
         this.newPID.loop(target, iCurrentState, iLastState);
+    }
+
+    public int getTelemetry(){
+        return this.jointMotor.getCurrentPosition();
     }
 }
