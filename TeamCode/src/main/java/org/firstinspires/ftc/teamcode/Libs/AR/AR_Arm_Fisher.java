@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Libs.AR;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import org.firstinspires.ftc.teamcode.Libs.AR.AR_Joint;
 
@@ -62,8 +63,10 @@ public class AR_Arm_Fisher
     private double targetSecond;
     private CRServo leftGripper;
     private CRServo rightGripper;
+    private ColorSensor sensor;
 
     private LinearOpMode bot;
+    AR_Light light;
 
     private int lastState = START;
     private int currentState = START;
@@ -83,8 +86,34 @@ public class AR_Arm_Fisher
         this.jointSecond = new AR_Joint(this.bot, "second_joint", P2, I2, D2, F2, false);
         leftGripper = bot.hardwareMap.crservo.get("left_gripper");
         rightGripper = bot.hardwareMap.crservo.get("right_gripper");
+        this.sensor = bot.hardwareMap.get(ColorSensor.class, "color_sensor");
+        this.light = new AR_Light("status_light", iBot);
 
         // Set FTC Dashboard Telemetry
+    }
+
+    public int getDetectedColor() {
+        int red = sensor.red();
+        int green = sensor.green();
+        int blue = sensor.blue();
+
+        if (red > green && red > blue) {
+            return 0;
+        } else if (blue > red && blue > green) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+
+    public void turnBlue(){
+        light.blueLight();
+    }
+    public void turnRed(){
+        light.blueLight();
+    }
+    public void turnYellow(){
+        light.yellowLight();
     }
 
     /**
@@ -176,6 +205,7 @@ public class AR_Arm_Fisher
     public void getTelemetry(){
         bot.telemetry.addData("First Joint: ", (jointFirst.getTelemetry()*(360/5281.1)));
         bot.telemetry.addData("Second Joint: ", (jointSecond.getTelemetry()*(360/5281.1)));
+        getTelemetry();
     }
 
     public void grab()

@@ -14,15 +14,16 @@ import org.firstinspires.ftc.teamcode.Libs.AR.MecanumDrive_5518;
 @TeleOp(name = "TeleOp_5518_IK", group = "TeleOp")
 public class TeleOp_5518_IK extends LinearOpMode
 {
-    //private MecanumDrive_5518 mecanumDrive;
+    private MecanumDrive_5518 mecanumDrive;
     private AR_Arm_Fisher arm;
+
 
     //@Override
     public void runOpMode()
     {
         // Initialize the drivetrain
         arm = new AR_Arm_Fisher(this);
-       // mecanumDrive = new MecanumDrive_5518(this);
+        mecanumDrive = new MecanumDrive_5518(this);
 
         waitForStart();
         if (isStopRequested()) return;
@@ -43,15 +44,14 @@ public class TeleOp_5518_IK extends LinearOpMode
                 arm.setArmStartPos();
             }
             if (gamepad2.dpad_down) {
-                arm.setArmGrabPos();            }
-            // Set this up: drivetrain.activateDriveTrainState();
+                arm.setArmGrabPos();          }
             arm.updateArmPos();
 
             if (gamepad1.left_trigger != 0) {
-                //mecanumDrive.setBoost(1);
+                mecanumDrive.setBoost(1);
             }
             else {
-                //mecanumDrive.setBoost(0.5);
+                mecanumDrive.setBoost(0.5);
             }
             if (gamepad2.left_trigger > 0.1) {
                 arm.grab();
@@ -60,6 +60,15 @@ public class TeleOp_5518_IK extends LinearOpMode
             }
             else{
                 arm.rest();
+            }
+            if(arm.getDetectedColor()==0){
+                arm.turnBlue();
+            }
+            else if(arm.getDetectedColor()==1){
+                arm.turnRed();
+            }
+            else{
+                arm.turnYellow();
             }
 
             //**************************************************************************************
