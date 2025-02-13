@@ -92,13 +92,6 @@ public class MecanumDrive_5518 {
         backRight.setPower(rightBackPower * boost);
     }
 
-    public void stop() {
-        frontLeft.setPower(0);
-        frontRight.setPower(0);
-        backLeft.setPower(0);
-        backRight.setPower(0);
-    }
-
     public void setBoost(double x){
         boost = x;
     }

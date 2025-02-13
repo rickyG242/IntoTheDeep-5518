@@ -22,8 +22,8 @@ public class TeleOp_5518_IK extends LinearOpMode
     public void runOpMode()
     {
         // Initialize the drivetrain
+        //mecanumDrive = new MecanumDrive_5518(this);
         arm = new AR_Arm_Fisher(this);
-        mecanumDrive = new MecanumDrive_5518(this);
 
         waitForStart();
         if (isStopRequested()) return;
@@ -34,18 +34,6 @@ public class TeleOp_5518_IK extends LinearOpMode
             // This call is made every loop and will read the current control pad values (for driving)
             // and update the drivetrain with those values.
             //mecanumDrive.drive();
-            if (gamepad2.dpad_up) {
-                arm.setArmDeployPos();
-            }
-            if (gamepad2.dpad_right) {
-                arm.setArmActivePos();
-            }
-            if (gamepad2.dpad_left) {
-                arm.setArmStartPos();
-            }
-            if (gamepad2.dpad_down) {
-                arm.setArmGrabPos();          }
-            arm.updateArmPos();
 
             if (gamepad1.left_trigger != 0) {
                 mecanumDrive.setBoost(1);
@@ -53,6 +41,25 @@ public class TeleOp_5518_IK extends LinearOpMode
             else {
                 mecanumDrive.setBoost(0.5);
             }
+
+            if (gamepad2.dpad_up) {
+                arm.setArmDeployPos();
+                telemetry.addData("Arm Status", "Set Arm");
+            }
+            if (gamepad2.dpad_right) {
+                arm.setArmActivePos();
+                telemetry.addData("Arm Status", "Set Arm Deploy");
+            }
+            if (gamepad2.dpad_left) {
+                arm.setArmStartPos();
+                telemetry.addData("Arm Status", "Set Arm Deploy");
+            }
+            if (gamepad2.dpad_down) {
+                arm.setArmGrabPos();
+                telemetry.addData("Arm Status", "Set Arm Deploy");
+            }
+            arm.updateArmPos();
+
             if (gamepad2.left_trigger > 0.1) {
                 arm.grab();
             } else if (gamepad2.right_trigger > 0.1){
@@ -61,16 +68,18 @@ public class TeleOp_5518_IK extends LinearOpMode
             else{
                 arm.rest();
             }
+
+            /*
             if(arm.getDetectedColor()==0){
                 arm.turnBlue();
             }
             else if(arm.getDetectedColor()==1){
-                arm.turnRed();
+                arm.turnRed();L
             }
             else{
                 arm.turnYellow();
             }
-
+*/
             //**************************************************************************************
             // ---------------------Gamepad 2 Controls ---------------------------------------------
 
@@ -78,7 +87,7 @@ public class TeleOp_5518_IK extends LinearOpMode
             //--------------------- TELEMETRY Code -------------------------------------------------
             // Useful telemetry data in case needed for testing and to find heading of robot
             //mecanumDrive.getTelemetryData();
-            arm.getTelemetry();
+            //arm.getTelemetry();
             telemetry.update();
         }
     }

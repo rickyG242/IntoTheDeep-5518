@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.Libs.AR;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+@Autonomous(name = "AR_Auto", group = "Linear Opmode")
 
 public class AR_Auto extends LinearOpMode {
     public static final int DEPLOY = 3, GRAB = 2, ACTIVE = 1, START = 0, point0 = 4, point1 = 5, point2 = 6;
@@ -15,6 +18,7 @@ public class AR_Auto extends LinearOpMode {
     AutonomousDrivetrain drivetrain = new AutonomousDrivetrain(iBot);
 
     public void runOpMode() {
+        iBot = this;
         int index = 0;
         while (opModeIsActive() && index < stateMachine.length) {
             currentState = stateMachine[index];

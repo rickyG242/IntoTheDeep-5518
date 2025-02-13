@@ -1,17 +1,20 @@
 package org.firstinspires.ftc.teamcode.Libs.AR.Sujay;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Libs.AR.AR_Arm_Fisher;
 import org.firstinspires.ftc.teamcode.Libs.AR.AutonomousDrivetrain;
 
+@Autonomous(name = "AR_Auto_Sujay", group = "Robot")
 public class AR_Auto_Sujay extends LinearOpMode {
-    LinearOpMode iBot;
-    AR_Arm_Fisher arm = new AR_Arm_Fisher(iBot);
-    AutonomousDrivetrain drivetrain = new AutonomousDrivetrain(iBot);
+    private LinearOpMode iBot;
+    private AR_Arm_Fisher arm = new AR_Arm_Fisher(iBot);
+    private AutonomousDrivetrain drivetrain = new AutonomousDrivetrain(iBot);
 
     public void runOpMode() {
         while (opModeIsActive()){
+            iBot = this;
             //Start
             drivetrain.turnToHeading(iBot, .5, -90);
             sleep(500);

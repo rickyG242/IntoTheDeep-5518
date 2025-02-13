@@ -35,7 +35,7 @@ public class AR_Arm_Fisher
     /** Angle of second Joint Active Position */
     public static double SECOND_JOINT_ACTIVE = -54.17841;
     /** Angle of first Joint Deploy Position */
-    public static double FIRST_JOINT_DEPLOY = -165;
+    public static double FIRST_JOINT_DEPLOY = -167;
     /** Angle of second Joint Deploy Position */
     public static double SECOND_JOINT_DEPLOY = -180;
     /** Angle of first Joint Grab Position */
@@ -82,16 +82,16 @@ public class AR_Arm_Fisher
         this.bot = iBot;
 
         // Declare instances of the two joints.
-        this.jointFirst = new AR_Joint(this.bot, "first_joint", P1, I1, D1, F1, false);
+        this.jointFirst = new AR_Joint(this.bot, "first_joint", P1, I1, D1, F1, true);
         this.jointSecond = new AR_Joint(this.bot, "second_joint", P2, I2, D2, F2, false);
         leftGripper = bot.hardwareMap.crservo.get("left_gripper");
         rightGripper = bot.hardwareMap.crservo.get("right_gripper");
-        this.sensor = bot.hardwareMap.get(ColorSensor.class, "color_sensor");
-        this.light = new AR_Light("status_light", iBot);
+        //this.sensor = bot.hardwareMap.get(ColorSensor.class, "color_sensor");
+        //this.light = new AR_Light("status_light", iBot);
 
         // Set FTC Dashboard Telemetry
     }
-
+/*
     public int getDetectedColor() {
         int red = sensor.red();
         int green = sensor.green();
