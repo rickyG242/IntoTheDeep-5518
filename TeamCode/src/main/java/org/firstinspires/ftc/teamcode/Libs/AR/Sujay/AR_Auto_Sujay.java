@@ -9,25 +9,28 @@ import org.firstinspires.ftc.teamcode.Libs.AR.AutonomousDrivetrain;
 @Autonomous(name = "AR_Auto_Sujay", group = "Robot")
 public class AR_Auto_Sujay extends LinearOpMode {
     private LinearOpMode iBot;
-    private AR_Arm_Fisher arm = new AR_Arm_Fisher(iBot);
-    private AutonomousDrivetrain drivetrain = new AutonomousDrivetrain(iBot);
+    private AR_Arm_Fisher arm;
+    private AutonomousDrivetrain drivetrain;
 
     public void runOpMode() {
+        waitForStart();
         while (opModeIsActive()){
             iBot = this;
+            drivetrain = new AutonomousDrivetrain(iBot);
+            arm =  new AR_Arm_Fisher(iBot);
             //Start
-            drivetrain.turnToHeading(iBot, .5, -90);
-            sleep(500);
+            drivetrain.turnToHeading(iBot, .5, 90);
+            sleep(1000);
             drivetrain.driveStraight(iBot, .5, 20, 0);
             //Reach Bucket
-            sleep(500);
-            deploy();
+            sleep(2000);
+            //deploy();
             getSample(.5,90);
-            deploy();
+            //deploy();
             getSample(6, 70);
-            deploy();
+            //deploy();
             getSample(7, 60);
-            deploy();
+            //deploy();
             getSample(10, 0);
             sleep(2000);
             getSample(5, 70);
