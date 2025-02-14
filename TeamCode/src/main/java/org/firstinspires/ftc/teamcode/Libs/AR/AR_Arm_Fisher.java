@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Libs.AR;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Libs.AR.AR_Joint;
 
@@ -82,7 +83,7 @@ public class AR_Arm_Fisher
         this.bot = iBot;
 
         // Declare instances of the two joints.
-        this.jointFirst = new AR_Joint(this.bot, "first_joint", P1, I1, D1, F1, true);
+        this.jointFirst = new AR_Joint(this.bot, "first_joint", P1, I1, D1, F1, false);
         this.jointSecond = new AR_Joint(this.bot, "second_joint", P2, I2, D2, F2, false);
         leftGripper = bot.hardwareMap.crservo.get("left_gripper");
         rightGripper = bot.hardwareMap.crservo.get("right_gripper");
@@ -205,18 +206,17 @@ public class AR_Arm_Fisher
     public void getTelemetry(){
         bot.telemetry.addData("First Joint: ", (jointFirst.getTelemetry()*(360/5281.1)));
         bot.telemetry.addData("Second Joint: ", (jointSecond.getTelemetry()*(360/5281.1)));
-        getTelemetry();
     }
 
     public void grab()
     {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
-        leftGripper.setPower(-.5);
-        rightGripper.setPower(-.5);
+        leftGripper.setPower(-.2);
+        rightGripper.setPower(.2);
     }
     public void drop()
     {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
-        leftGripper.setPower(.5);
-        rightGripper.setPower(.5);
+        leftGripper.setPower(.2);
+        rightGripper.setPower(-.2);
     }
     public void rest()
     {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.

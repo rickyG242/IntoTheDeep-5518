@@ -22,19 +22,19 @@ public class TeleOp_5518_IK extends LinearOpMode
     public void runOpMode()
     {
         // Initialize the drivetrain
-        //mecanumDrive = new MecanumDrive_5518(this);
+        mecanumDrive = new MecanumDrive_5518(this);
         arm = new AR_Arm_Fisher(this);
 
         waitForStart();
         if (isStopRequested()) return;
+
         while (opModeIsActive())
         {
             //telemetry.addData("currentState", currentState);
             //telemetry.addData("lastState", lastState);
             // This call is made every loop and will read the current control pad values (for driving)
             // and update the drivetrain with those values.
-            //mecanumDrive.drive();
-
+            mecanumDrive.drive();
             if (gamepad1.left_trigger != 0) {
                 mecanumDrive.setBoost(1);
             }
@@ -44,19 +44,19 @@ public class TeleOp_5518_IK extends LinearOpMode
 
             if (gamepad2.dpad_up) {
                 arm.setArmDeployPos();
-                telemetry.addData("Arm Status", "Set Arm");
+                telemetry.addData("Arm Status", "Set Arm Deploy");
             }
-            if (gamepad2.dpad_right) {
+            else if (gamepad2.dpad_right) {
                 arm.setArmActivePos();
-                telemetry.addData("Arm Status", "Set Arm Deploy");
+                telemetry.addData("Arm Status", "Set Arm Active");
             }
-            if (gamepad2.dpad_left) {
+            else if (gamepad2.dpad_left) {
                 arm.setArmStartPos();
-                telemetry.addData("Arm Status", "Set Arm Deploy");
+                telemetry.addData("Arm Status", "Set Arm Start");
             }
-            if (gamepad2.dpad_down) {
+            else if (gamepad2.dpad_down) {
                 arm.setArmGrabPos();
-                telemetry.addData("Arm Status", "Set Arm Deploy");
+                telemetry.addData("Arm Status", "Set Arm Grab");
             }
             arm.updateArmPos();
 

@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.TeleOp.TeleOp_5518;
 
 public class MecanumDrive_5518 {
     private double y; //value of y on joystick
@@ -35,7 +34,6 @@ public class MecanumDrive_5518 {
     IMU imu;
 
     LinearOpMode bot;
-    TeleOp_5518 secondbot;
 
     public MecanumDrive_5518(LinearOpMode iBot)
     {
