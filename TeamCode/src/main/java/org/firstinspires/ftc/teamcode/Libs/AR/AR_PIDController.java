@@ -78,7 +78,7 @@ public class AR_PIDController {
         double ff = Math.cos(Math.toRadians(target * ticksPerDegree)) * f;  // Feedforward
         double power = pid + ff;  // Total power from PID and feedforward
         if ((this.jointName.equals("first_joint")) && (iLastState == AR_Auto.DEPLOY) && ((armPos / ticksPerDegree) < target - 10)) {
-            power = power * 0.1;  // Throttle power back for arm descent.
+            power = power * 0.07;  // Throttle power back for arm descent.
         }
         this.motor.setPower(power);
         this.bot.telemetry.addData("Power", " (" + this.jointName + ") " + power);
