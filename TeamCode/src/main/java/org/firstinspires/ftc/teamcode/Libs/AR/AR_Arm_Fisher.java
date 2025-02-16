@@ -32,7 +32,7 @@ public class AR_Arm_Fisher
     /** Angle of second Joint Starting Position */
     public static double SECOND_JOINT_START = 0;
     /** Angle of first Joint Active Position */
-    public static double FIRST_JOINT_ACTIVE = -18.14623;
+    public static double FIRST_JOINT_ACTIVE = -100.14623;
     /** Angle of second Joint Active Position */
     public static double SECOND_JOINT_ACTIVE = -54.17841;
     /** Angle of first Joint Deploy Position */
@@ -42,7 +42,12 @@ public class AR_Arm_Fisher
     /** Angle of first Joint Grab Position */
     public static double FIRST_JOINT_GRAB = -36.438735;
     /** Angle of second Joint Grab Position */
-    public static double SECOND_JOINT_GRAB = -123.762584259;
+    public static double SECOND_JOINT_GRAB = -108.762584259;
+
+    /** Angle of first Joint Deploy Position */
+    public static double FIRST_JOINT_MID = -51;
+    /** Angle of second Joint Deploy Position */
+    public static double SECOND_JOINT_MID = -83;
 
     public static double P1 = 0.003, I1 = 0.05, D1 = 0.0001;
     public static double F1 = 0.05;
@@ -54,6 +59,7 @@ public class AR_Arm_Fisher
     public static int ACTIVE = 1;
     public static int GRAB = 2;
     public static int DEPLOY = 3;
+    public static int MID = 4;
 
     // Create a "AR_Joint" instance for each joint of the "AR_Arm".
     private AR_Joint jointFirst;
@@ -87,12 +93,12 @@ public class AR_Arm_Fisher
         this.jointSecond = new AR_Joint(this.bot, "second_joint", P2, I2, D2, F2, false);
         leftGripper = bot.hardwareMap.crservo.get("left_gripper");
         rightGripper = bot.hardwareMap.crservo.get("right_gripper");
-        //this.sensor = bot.hardwareMap.get(ColorSensor.class, "color_sensor");
-        //this.light = new AR_Light("status_light", iBot);
+        this.sensor = bot.hardwareMap.get(ColorSensor.class, "color_sensor");
+        this.light = new AR_Light("status_light", iBot);
 
         // Set FTC Dashboard Telemetry
     }
-/*
+
     public int getDetectedColor() {
         int red = sensor.red();
         int green = sensor.green();
@@ -111,11 +117,15 @@ public class AR_Arm_Fisher
         light.blueLight();
     }
     public void turnRed(){
-        light.blueLight();
+        light.redLight();
     }
     public void turnYellow(){
         light.yellowLight();
     }
+
+    public void updateLight(){
+        light.updateLight();
+}
 
     /**
      * Return immediately and moves the joints to the desired location.
@@ -200,6 +210,17 @@ public class AR_Arm_Fisher
         if( currentState != AR_Arm_Fisher.START ) {
             lastState = currentState;
             currentState = AR_Arm_Fisher.START;
+        }
+    }
+    public void setArmMidPos( )
+    {
+        // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
+        this.targetFirst = FIRST_JOINT_MID;
+        this.targetSecond = SECOND_JOINT_MID;
+
+        if( currentState != AR_Arm_Fisher.MID ) {
+            lastState = currentState;
+            currentState = AR_Arm_Fisher.MID;
         }
     }
 

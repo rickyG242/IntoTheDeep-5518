@@ -20,13 +20,13 @@ public class AR_Auto_Sujay extends LinearOpMode {
             arm =  new AR_Arm_Fisher(iBot);
             //Start
             drivetrain.turnToHeading(iBot, .5, 90);
-            sleep(1000);
+            sleep(2000);
             drivetrain.driveStraight(iBot, .5, 20, 0);
             //Reach Bucket
             sleep(2000);
-            //deploy();
+            deploy();
             getSample(.5,90);
-            //deploy();
+            deploy();
             getSample(6, 70);
             //deploy();
             getSample(7, 60);
@@ -41,10 +41,14 @@ public class AR_Auto_Sujay extends LinearOpMode {
     public void deploy(){
         arm.setArmDeployPos();
         arm.updateArmPos();
-        sleep(2000);
+        sleep(3000);
         arm.drop();
         sleep(1500);
         arm.rest();
+        arm.setArmActivePos();
+        sleep(1500);
+        arm.setArmStartPos();
+        sleep(1000);
     }
 
     public void getSample (double startTravel, int returnTurn){

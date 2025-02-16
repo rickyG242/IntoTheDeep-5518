@@ -22,6 +22,7 @@ public class TeleOp_Arm_Test extends LinearOpMode
 
         while (opModeIsActive())
         {
+
             if (gamepad2.dpad_up) {
                 arm.setArmDeployPos();
                 telemetry.addData("Arm Status", "Set Arm Deploy");
@@ -38,6 +39,10 @@ public class TeleOp_Arm_Test extends LinearOpMode
                 arm.setArmGrabPos();
                 telemetry.addData("Arm Status", "Set Arm Grab");
             }
+            else if (gamepad2.square) {
+                arm.setArmMidPos();
+                telemetry.addData("Arm Status", "Set Arm Mid");
+            }
             arm.updateArmPos();
 
             if (gamepad2.left_trigger > 0.1) {
@@ -49,17 +54,16 @@ public class TeleOp_Arm_Test extends LinearOpMode
                 arm.rest();
             }
 
-            /*
             if(arm.getDetectedColor()==0){
                 arm.turnBlue();
             }
             else if(arm.getDetectedColor()==1){
-                arm.turnRed();L
+                arm.turnRed();
             }
             else{
                 arm.turnYellow();
             }
-*/
+
             //**************************************************************************************
             // ---------------------Gamepad 2 Controls ---------------------------------------------
 

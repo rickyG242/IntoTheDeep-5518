@@ -58,6 +58,10 @@ public class TeleOp_5518_IK extends LinearOpMode
                 arm.setArmGrabPos();
                 telemetry.addData("Arm Status", "Set Arm Grab");
             }
+            else if (gamepad2.square) {
+                arm.setArmMidPos();
+                telemetry.addData("Arm Status", "Set Arm Mid");
+            }
             arm.updateArmPos();
 
             if (gamepad2.left_trigger > 0.1) {
@@ -69,25 +73,25 @@ public class TeleOp_5518_IK extends LinearOpMode
                 arm.rest();
             }
 
-            /*
             if(arm.getDetectedColor()==0){
                 arm.turnBlue();
             }
             else if(arm.getDetectedColor()==1){
-                arm.turnRed();L
+                arm.turnRed();
             }
             else{
                 arm.turnYellow();
             }
-*/
+            arm.updateLight();
+
             //**************************************************************************************
             // ---------------------Gamepad 2 Controls ---------------------------------------------
 
             //**************************************************************************************
             //--------------------- TELEMETRY Code -------------------------------------------------
             // Useful telemetry data in case needed for testing and to find heading of robot
-            //mecanumDrive.getTelemetryData();
-            //arm.getTelemetry();
+            mecanumDrive.getTelemetryData();
+            arm.getTelemetry();
             telemetry.update();
         }
     }

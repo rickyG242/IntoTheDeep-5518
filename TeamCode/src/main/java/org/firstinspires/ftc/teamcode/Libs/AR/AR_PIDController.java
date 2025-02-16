@@ -80,6 +80,9 @@ public class AR_PIDController {
         if ((this.jointName.equals("first_joint")) && (iLastState == AR_Auto.DEPLOY) && ((armPos / ticksPerDegree) < target - 10)) {
             power = power * 0.07;  // Throttle power back for arm descent.
         }
+        if ((this.jointName.equals("first_joint")) && (iLastState == AR_Auto.ACTIVE) && ((armPos / ticksPerDegree) < target - 10)) {
+            power = power * 0.08;  // Throttle power back for arm descent.
+        }
         this.motor.setPower(power);
         this.bot.telemetry.addData("Power", " (" + this.jointName + ") " + power);
         this.bot.telemetry.addData("Pos(Ticks)", " (" + this.jointName + ") " + armPos);
