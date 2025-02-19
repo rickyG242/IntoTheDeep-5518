@@ -21,20 +21,20 @@ public class AR_Auto_Sujay extends LinearOpMode {
             //Start
             drivetrain.turnToHeading(iBot, .5, 90);
             sleep(2000);
-            drivetrain.driveStraight(iBot, .5, 20, 0);
+            drivetrain.moveRobot(30,0);
             //Reach Bucket
             sleep(2000);
-            deploy();
-            getSample(.5,90);
-            deploy();
-            getSample(6, 70);
             //deploy();
-            getSample(7, 60);
+            //getSample(10,-90);
             //deploy();
-            getSample(10, 0);
-            sleep(2000);
-            getSample(5, 70);
-            sleep(5000);
+            //getSample(12, -70);
+            //deploy();
+            //getSample(14, -60);
+            //deploy();
+            //getSample(10, 0);
+            //sleep(2000);
+            //getSample(5, 70);
+            //sleep(5000);
         }
     }
 
@@ -53,13 +53,14 @@ public class AR_Auto_Sujay extends LinearOpMode {
 
     public void getSample (double startTravel, int returnTurn){
         drivetrain.turnToHeading(iBot, .5, returnTurn);
-        sleep(500);
+        sleep(1500);
         drivetrain.driveStraight(iBot, .5, startTravel, 0);
         arm.grab();
-        sleep(500);
+        sleep(1500);
         drivetrain.driveStraight(iBot, .5, -startTravel, 0);
         sleep(1500);
         drivetrain.turnToHeading(iBot, .5, -returnTurn);
+        arm.rest();
         sleep(1500);
     }
 }

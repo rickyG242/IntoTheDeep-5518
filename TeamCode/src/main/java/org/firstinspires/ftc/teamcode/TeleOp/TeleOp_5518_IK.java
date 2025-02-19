@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import android.util.Log;
 
@@ -16,6 +17,7 @@ public class TeleOp_5518_IK extends LinearOpMode
 {
     private MecanumDrive_5518 mecanumDrive;
     private AR_Arm_Fisher arm;
+    private TouchSensor touch;
 
 
     //@Override
@@ -24,6 +26,7 @@ public class TeleOp_5518_IK extends LinearOpMode
         // Initialize the drivetrain
         mecanumDrive = new MecanumDrive_5518(this);
         arm = new AR_Arm_Fisher(this);
+        this.touch = hardwareMap.get(TouchSensor.class, "touch");
 
         waitForStart();
         if (isStopRequested()) return;
@@ -73,15 +76,19 @@ public class TeleOp_5518_IK extends LinearOpMode
                 arm.rest();
             }
 
-            if(arm.getDetectedColor()==0){
-                arm.turnBlue();
+            if (touch.isPressed()){
+                arm.turnGreen();
             }
             else if(arm.getDetectedColor()==1){
+                arm.turnBlue();
+            }
+            else if(arm.getDetectedColor()==0){
                 arm.turnRed();
             }
             else{
                 arm.turnYellow();
             }
+            telemetry.addData("Pressed", touch.isPressed());
             arm.updateLight();
 
             //**************************************************************************************

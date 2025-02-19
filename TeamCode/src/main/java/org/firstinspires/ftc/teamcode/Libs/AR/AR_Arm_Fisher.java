@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.Libs.AR.AR_Joint;
 
@@ -60,6 +61,7 @@ public class AR_Arm_Fisher
     public static int GRAB = 2;
     public static int DEPLOY = 3;
     public static int MID = 4;
+    public boolean pressed = false;
 
     // Create a "AR_Joint" instance for each joint of the "AR_Arm".
     private AR_Joint jointFirst;
@@ -71,6 +73,7 @@ public class AR_Arm_Fisher
     private CRServo leftGripper;
     private CRServo rightGripper;
     private ColorSensor sensor;
+    //private TouchSensor touch;
 
     private LinearOpMode bot;
     AR_Light light;
@@ -95,7 +98,6 @@ public class AR_Arm_Fisher
         rightGripper = bot.hardwareMap.crservo.get("right_gripper");
         this.sensor = bot.hardwareMap.get(ColorSensor.class, "color_sensor");
         this.light = new AR_Light("status_light", iBot);
-
         // Set FTC Dashboard Telemetry
     }
 
@@ -123,13 +125,18 @@ public class AR_Arm_Fisher
         light.yellowLight();
     }
 
+    public void turnGreen(){
+        light.greenLight();
+    }
+
     public void updateLight(){
         light.updateLight();
-}
+    }
 
-    /**
-     * Return immediately and moves the joints to the desired location.
-     */
+
+        /**
+         * Return immediately and moves the joints to the desired location.
+         */
     public void updateArmPos( )
     {
         // ToDo: I wonder if we need to come up with code to move the joints at different times. For example, maybe we have to move joint 1 20 degrees before moving joint 2 at all.
@@ -227,6 +234,9 @@ public class AR_Arm_Fisher
     public void getTelemetry(){
         bot.telemetry.addData("First Joint: ", (jointFirst.getTelemetry()*(360/5281.1)));
         bot.telemetry.addData("Second Joint: ", (jointSecond.getTelemetry()*(360/5281.1)));
+        bot.telemetry.addData("Red", sensor.red());
+        bot.telemetry.addData("Blue", sensor.blue());
+        bot.telemetry.addData("Green", sensor.green());
     }
 
     public void grab()
