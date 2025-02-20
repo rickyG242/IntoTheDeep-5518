@@ -4,8 +4,6 @@ import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Libs.AR.Archive.AR_Arm;
-
 /**
  * This class creates a PID Controller to use with each joint.
  *
@@ -70,17 +68,17 @@ public class AR_PIDController {
         this.controller.setPID(p, i, d);
         double armPos = 0;
         if (this.jointName.equals("first_joint")) {
-            armPos = this.motor.getCurrentPosition() + (AR_Arm_IK.startJoint1 * ticksPerDegree); // armPos is in Ticks
+            armPos = this.motor.getCurrentPosition() + (AR_Arm_Fisher.FIRST_JOINT_START * ticksPerDegree); // armPos is in Ticks
         } else if (this.jointName.equals("second_joint")) {
-            armPos = this.motor.getCurrentPosition() + (AR_Arm_IK.startJoint2 * ticksPerDegree); // armPos is in Ticks
+            armPos = this.motor.getCurrentPosition() + (AR_Arm_Fisher.SECOND_JOINT_START * ticksPerDegree); // armPos is in Ticks
         }
         double pid = this.controller.calculate(armPos, target * ticksPerDegree);  // target is in degrees
         double ff = Math.cos(Math.toRadians(target * ticksPerDegree)) * f;  // Feedforward
         double power = pid + ff;  // Total power from PID and feedforward
-        if ((this.jointName.equals("first_joint")) && (iLastState == AR_Auto.DEPLOY) && ((armPos / ticksPerDegree) < target - 10)) {
+        if ((this.jointName.equals("first_joint")) && (iLastState == AR_Arm_Fisher.DEPLOY) && ((armPos / ticksPerDegree) < target - 10)) {
             power = power * 0.07;  // Throttle power back for arm descent.
         }
-        if ((this.jointName.equals("first_joint")) && (iLastState == AR_Auto.ACTIVE) && ((armPos / ticksPerDegree) < target - 10)) {
+        if ((this.jointName.equals("first_joint")) && (iLastState == AR_Arm_Fisher.ACTIVE) && ((armPos / ticksPerDegree) < target - 10)) {
             power = power * 0.08;  // Throttle power back for arm descent.
         }
         this.motor.setPower(power);
