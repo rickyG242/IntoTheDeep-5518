@@ -76,7 +76,7 @@ public class TeleOp_5518_IK extends LinearOpMode
                 arm.rest();
             }
 
-            if (touch.isPressed()){
+            if (touch.getValue() == 1){
                 arm.turnGreen();
             }
             else if(arm.getDetectedColor()==1){
@@ -88,7 +88,7 @@ public class TeleOp_5518_IK extends LinearOpMode
             else{
                 arm.turnYellow();
             }
-            telemetry.addData("Pressed", touch.isPressed());
+            telemetry.addData("Pressed", touch.getValue());
             arm.updateLight();
 
             //**************************************************************************************

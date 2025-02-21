@@ -39,6 +39,9 @@ public class AR_Joint
         // Instantiate new PID Controller for this joint.
         this.newPID = new AR_PIDController(iBot, jointMotor, iJointName, iP, iI, iD, iF, fuzzyLogicActive);
     }
+    public boolean isBusy(){
+        return jointMotor.isBusy();
+    }
 
     /**
      * Move joint to the desired target.

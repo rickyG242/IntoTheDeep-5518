@@ -6,22 +6,22 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous(name = "AR_Auto_Sujay", group = "Robot")
 public class AR_Auto_Sujay extends LinearOpMode {
     private LinearOpMode iBot;
-    private AR_Arm_Fisher arm;
-    private AutonomousDrivetrain_Sujay drivetrain;
+    private AR_Arm_Fisher_Test arm;
+    //private AutonomousDrivetrain_Sujay drivetrain;
 
     public void runOpMode() {
         waitForStart();
         while (opModeIsActive()){
             iBot = this;
-            drivetrain = new AutonomousDrivetrain_Sujay(iBot);
-            arm =  new AR_Arm_Fisher(iBot);
+            //drivetrain = new AutonomousDrivetrain_Sujay(iBot);
+            arm =  new AR_Arm_Fisher_Test(iBot);
             //Start
-            drivetrain.turnToHeading(iBot, .5, 90);
-            sleep(2000);
-            drivetrain.moveRobot(30,0);
+            //drivetrain.turnToHeading(iBot, .5, 90);
+            //sleep(2000);
+            //drivetrain.moveRobot(30,0);
             //Reach Bucket
-            sleep(2000);
-            //deploy();
+            //sleep(2000);
+            deploy();
             //getSample(10,-90);
             //deploy();
             //getSample(12, -70);
@@ -37,27 +37,30 @@ public class AR_Auto_Sujay extends LinearOpMode {
 
     public void deploy(){
         arm.setArmDeployPos();
-        arm.updateArmPos();
-        sleep(3000);
-        arm.drop();
+        while (arm.isBusy()){
+            arm.updateArmPos();
+        }
+        /*
+        //arm.drop();
         sleep(1500);
-        arm.rest();
+        //arm.rest();
         arm.setArmActivePos();
         sleep(1500);
         arm.setArmStartPos();
         sleep(1000);
+         */
     }
 
     public void getSample (double startTravel, int returnTurn){
-        drivetrain.turnToHeading(iBot, .5, returnTurn);
+        //drivetrain.turnToHeading(iBot, .5, returnTurn);
         sleep(1500);
-        drivetrain.driveStraight(iBot, .5, startTravel, 0);
-        arm.grab();
+        //drivetrain.driveStraight(iBot, .5, startTravel, 0);
+        //arm.grab();
         sleep(1500);
-        drivetrain.driveStraight(iBot, .5, -startTravel, 0);
+        //drivetrain.driveStraight(iBot, .5, -startTravel, 0);
         sleep(1500);
-        drivetrain.turnToHeading(iBot, .5, -returnTurn);
-        arm.rest();
+        //drivetrain.turnToHeading(iBot, .5, -returnTurn);
+        //arm.rest();
         sleep(1500);
     }
 }

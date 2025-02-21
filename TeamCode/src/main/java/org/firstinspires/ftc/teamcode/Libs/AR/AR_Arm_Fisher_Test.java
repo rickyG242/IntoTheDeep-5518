@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.Libs.AR.AR_Joint;
  */
 
 
-public class AR_Arm_Fisher
+public class AR_Arm_Fisher_Test
 {
     /** Currently, the arm's rest is at approx. 43 degree up pointing straight down. That mean gravity is
      * working the most against the arm (horizontal) at -47 from the rest. So to make the angle align
@@ -39,7 +39,7 @@ public class AR_Arm_Fisher
     /** Angle of first Joint Deploy Position */
     public static double FIRST_JOINT_DEPLOY = -165;
     /** Angle of second Joint Deploy Position */
-    public static double SECOND_JOINT_DEPLOY = -185;
+    public static double SECOND_JOINT_DEPLOY = -170;
     /** Angle of first Joint Grab Position */
     public static double FIRST_JOINT_GRAB = -36.438735;
     /** Angle of second Joint Grab Position */
@@ -71,13 +71,11 @@ public class AR_Arm_Fisher
     // Variables to save the desired angle of the two AR_JOINTs.
     private double targetFirst;
     private double targetSecond;
-    private CRServo leftGripper;
-    private CRServo rightGripper;
     private ColorSensor sensor;
     //private TouchSensor touch;
 
     private LinearOpMode bot;
-    AR_Light light;
+
 
     private int lastState = START;
     private int currentState = START;
@@ -87,7 +85,7 @@ public class AR_Arm_Fisher
      *
      * @param iBot Handle to the LinearOpMode.
      */
-    public AR_Arm_Fisher( LinearOpMode iBot )
+    public AR_Arm_Fisher_Test( LinearOpMode iBot )
     {
         // Take the passed in value and assign to class variables.
         this.bot = iBot;
@@ -95,49 +93,13 @@ public class AR_Arm_Fisher
         // Declare instances of the two joints.
         this.jointFirst = new AR_Joint(this.bot, "first_joint", P1, I1, D1, F1, false);
         this.jointSecond = new AR_Joint(this.bot, "second_joint", P2, I2, D2, F2, false);
-        leftGripper = bot.hardwareMap.crservo.get("left_gripper");
-        rightGripper = bot.hardwareMap.crservo.get("right_gripper");
-        this.sensor = bot.hardwareMap.get(ColorSensor.class, "color_sensor");
-        this.light = new AR_Light("status_light", iBot);
+
         // Set FTC Dashboard Telemetry
     }
 
-    public int getDetectedColor() {
-        int red = sensor.red();
-        int green = sensor.green();
-        int blue = sensor.blue();
-
-        if (red > green && red > blue) {
-            return 0;
-        } else if (blue > red && blue > green) {
-            return 1;
-        } else {
-            return -1;
-        }
-    }
-
-    public void turnBlue(){
-        light.blueLight();
-    }
-    public void turnRed(){
-        light.redLight();
-    }
-    public void turnYellow(){
-        light.yellowLight();
-    }
-
-    public void turnGreen(){
-        light.greenLight();
-    }
-
-    public void updateLight(){
-        light.updateLight();
-    }
-
-
-        /**
-         * Return immediately and moves the joints to the desired location.
-         */
+    /**
+     * Return immediately and moves the joints to the desired location.
+     */
     public void updateArmPos( )
     {
         // ToDo: I wonder if we need to come up with code to move the joints at different times. For example, maybe we have to move joint 1 20 degrees before moving joint 2 at all.
@@ -232,27 +194,13 @@ public class AR_Arm_Fisher
         }
     }
 
+    public boolean isBusy(){
+        return (jointFirst.isBusy() && jointSecond.isBusy());
+    }
+
     public void getTelemetry(){
         bot.telemetry.addData("First Joint: ", (jointFirst.getTelemetry()*(360/5281.1)));
         bot.telemetry.addData("Second Joint: ", (jointSecond.getTelemetry()*(360/5281.1)));
-        bot.telemetry.addData("Red", sensor.red());
-        bot.telemetry.addData("Blue", sensor.blue());
-        bot.telemetry.addData("Green", sensor.green());
     }
 
-    public void grab()
-    {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
-        leftGripper.setPower(-.2);
-        rightGripper.setPower(.2);
-    }
-    public void drop()
-    {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
-        leftGripper.setPower(.2);
-        rightGripper.setPower(-.2);
-    }
-    public void rest()
-    {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
-        leftGripper.setPower(0);
-        rightGripper.setPower(0);
-    }
 }
