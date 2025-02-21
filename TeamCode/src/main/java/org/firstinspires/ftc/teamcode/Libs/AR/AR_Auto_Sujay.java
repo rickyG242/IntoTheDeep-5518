@@ -3,8 +3,13 @@ package org.firstinspires.ftc.teamcode.Libs.AR;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import android.util.Log;
+
 @Autonomous(name = "AR_Auto_Sujay", group = "Robot")
 public class AR_Auto_Sujay extends LinearOpMode {
+    private static final Logger log = LoggerFactory.getLogger(AR_Auto_Sujay.class);
     private LinearOpMode iBot;
     private AR_Arm_Fisher_Test arm;
     //private AutonomousDrivetrain_Sujay drivetrain;
@@ -21,7 +26,10 @@ public class AR_Auto_Sujay extends LinearOpMode {
             //drivetrain.moveRobot(30,0);
             //Reach Bucket
             //sleep(2000);
-            deploy();
+            arm.setArmDeployPos();
+            Log.i("FTC", "Deploying");
+            arm.updateArmPos();
+            Log.i("FTC", "Updating");
             //getSample(10,-90);
             //deploy();
             //getSample(12, -70);
@@ -37,6 +45,7 @@ public class AR_Auto_Sujay extends LinearOpMode {
 
     public void deploy(){
         arm.setArmDeployPos();
+        arm.updateArmPos();
         while (arm.isBusy()){
             arm.updateArmPos();
         }

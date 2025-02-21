@@ -39,7 +39,7 @@ public class AR_Arm_Fisher
     /** Angle of first Joint Deploy Position */
     public static double FIRST_JOINT_DEPLOY = -165;
     /** Angle of second Joint Deploy Position */
-    public static double SECOND_JOINT_DEPLOY = -185;
+    public static double SECOND_JOINT_DEPLOY = -170;
     /** Angle of first Joint Grab Position */
     public static double FIRST_JOINT_GRAB = -36.438735;
     /** Angle of second Joint Grab Position */
@@ -108,11 +108,13 @@ public class AR_Arm_Fisher
         int blue = sensor.blue();
 
         if (red > green && red > blue) {
-            return 0;
+            return 0; // Red detected
         } else if (blue > red && blue > green) {
-            return 1;
+            return 1; // Blue detected
+        } else if (red > 500 && green > 500 && blue < 500) {
+            return 2; // Yellow detected (Red + Green strong, Blue weak)
         } else {
-            return -1;
+            return -1; // No clear detection
         }
     }
 
@@ -128,6 +130,10 @@ public class AR_Arm_Fisher
 
     public void turnGreen(){
         light.greenLight();
+    }
+
+    public void turnNeutral(){
+        light.policeLights();
     }
 
     public void updateLight(){
