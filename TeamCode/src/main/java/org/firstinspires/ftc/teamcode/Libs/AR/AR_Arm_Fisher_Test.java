@@ -37,7 +37,7 @@ public class AR_Arm_Fisher_Test
     /** Angle of second Joint Active Position */
     public static double SECOND_JOINT_ACTIVE = -54.17841;
     /** Angle of first Joint Deploy Position */
-    public static double FIRST_JOINT_DEPLOY = -165;
+    public static double FIRST_JOINT_DEPLOY = -160;
     /** Angle of second Joint Deploy Position */
     public static double SECOND_JOINT_DEPLOY = -170;
     /** Angle of first Joint Grab Position */
@@ -132,6 +132,7 @@ public class AR_Arm_Fisher_Test
             lastState = currentState;
             currentState = AR_Arm_Fisher.DEPLOY;
         }
+        updateArmPos();
     }
 
     /**
@@ -147,6 +148,7 @@ public class AR_Arm_Fisher_Test
             lastState = currentState;
             currentState = AR_Arm_Fisher.GRAB;
         }
+        updateArmPos();
     }
 
     /**
@@ -162,6 +164,7 @@ public class AR_Arm_Fisher_Test
             lastState = currentState;
             currentState = AR_Arm_Fisher.ACTIVE;
         }
+        updateArmPos();
 
 
         // Todo: Somehow the power should be set to zero after movement because we don't want to waste battery power holding
@@ -181,6 +184,7 @@ public class AR_Arm_Fisher_Test
             lastState = currentState;
             currentState = AR_Arm_Fisher.START;
         }
+        updateArmPos();
     }
     public void setArmMidPos( )
     {
@@ -192,6 +196,7 @@ public class AR_Arm_Fisher_Test
             lastState = currentState;
             currentState = AR_Arm_Fisher.MID;
         }
+        updateArmPos();
     }
 
     public boolean isBusy(){

@@ -43,7 +43,7 @@ public class AR_Arm_Fisher
     /** Angle of first Joint Grab Position */
     public static double FIRST_JOINT_GRAB = -36.438735;
     /** Angle of second Joint Grab Position */
-    public static double SECOND_JOINT_GRAB = -108.762584259;
+    public static double SECOND_JOINT_GRAB = -104.762584259;
 
     /** Angle of first Joint Deploy Position */
     public static double FIRST_JOINT_MID = -51;
