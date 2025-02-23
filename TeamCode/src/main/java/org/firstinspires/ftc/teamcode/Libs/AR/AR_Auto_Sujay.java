@@ -29,7 +29,7 @@ public class AR_Auto_Sujay extends LinearOpMode {
             //Start
             drivetrain.turnToHeading(iBot, .5, -90);
             //sleep(2000);
-            drivetrain.driveStraight(iBot,.5,20, 0);
+            drivetrain.driveStraight(iBot,.5 ,20, 0);
             //Reach Bucket
             //arm.setArmDeployPos();
             //getSample(10,-90);

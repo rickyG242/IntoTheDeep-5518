@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Autonomous(name = "AR_Auto_Sujay", group = "Robot")
+@Autonomous(name = "AR_Auto_Sujay_Test", group = "Robot")
 public class AR_Auto_Sujay_Test extends LinearOpMode {
     private static final Logger log = LoggerFactory.getLogger(AR_Auto_Sujay_Test.class);
     public static final int DEPLOY = 3, GRAB = 2, ACTIVE = 1, START = 0, point0 = 4, point1 = 5, point2 = 6;

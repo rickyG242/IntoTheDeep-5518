@@ -230,6 +230,7 @@ public class AutonomousDrivetrain_Sujay {
 
     // **********  HIGH Level driving functions.  ********************
 
+
     /**
      *  Drive in a straight line, on a fixed compass heading (angle), based on encoder counts.
      *  Move will stop if either of these conditions occur:
@@ -242,6 +243,7 @@ public class AutonomousDrivetrain_Sujay {
      *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
      *                   If a relative angle is required, add/subtract from the current robotHeading.
      */
+
     public void driveStraight(LinearOpMode iBot, double maxDriveSpeed,
                               double distance,
                               double heading) {
@@ -269,7 +271,7 @@ public class AutonomousDrivetrain_Sujay {
             // keep looping while we are still active, and BOTH motors are running.
             while (iBot.opModeIsActive() && (MTR_LF.isBusy() && MTR_LB.isBusy() && MTR_RF.isBusy() && MTR_RB.isBusy())) {
                 // Determine required steering to keep on heading
-                turnSpeed = getSteeringCorrection(heading, P_DRIVE_GAIN);
+                //turnSpeed = getSteeringCorrection(heading, P_DRIVE_GAIN);
                 // if driving in reverse, the motor correction also needs to be reversed
                 if (distance < 0)
                     turnSpeed *= -1.0;
