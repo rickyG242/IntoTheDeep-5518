@@ -33,17 +33,17 @@ public class AR_Arm_Fisher_Test
     /** Angle of second Joint Starting Position */
     public static double SECOND_JOINT_START = 0;
     /** Angle of first Joint Active Position */
-    public static double FIRST_JOINT_ACTIVE = -100.14623;
+    public static double FIRST_JOINT_ACTIVE = -75;
     /** Angle of second Joint Active Position */
-    public static double SECOND_JOINT_ACTIVE = -54.17841;
+    public static double SECOND_JOINT_ACTIVE = -75;
     /** Angle of first Joint Deploy Position */
-    public static double FIRST_JOINT_DEPLOY = -160;
+    public static double FIRST_JOINT_DEPLOY = -150;
     /** Angle of second Joint Deploy Position */
-    public static double SECOND_JOINT_DEPLOY = -170;
+    public static double SECOND_JOINT_DEPLOY = -145;
     /** Angle of first Joint Grab Position */
-    public static double FIRST_JOINT_GRAB = -36.438735;
+    public static double FIRST_JOINT_GRAB = -75;
     /** Angle of second Joint Grab Position */
-    public static double SECOND_JOINT_GRAB = -108.762584259;
+    public static double SECOND_JOINT_GRAB = -150;
 
     /** Angle of first Joint Deploy Position */
     public static double FIRST_JOINT_MID = -51;
@@ -69,13 +69,13 @@ public class AR_Arm_Fisher_Test
     private AR_Joint jointSecond;
 
     // Variables to save the desired angle of the two AR_JOINTs.
-    private double targetFirst;
-    private double targetSecond;
+    private double targetFirst = FIRST_JOINT_START;
+    private double targetSecond = SECOND_JOINT_START;
+
     private ColorSensor sensor;
     //private TouchSensor touch;
 
     private LinearOpMode bot;
-
 
     private int lastState = START;
     private int currentState = START;
@@ -132,7 +132,6 @@ public class AR_Arm_Fisher_Test
             lastState = currentState;
             currentState = AR_Arm_Fisher.DEPLOY;
         }
-        updateArmPos();
     }
 
     /**
@@ -148,7 +147,6 @@ public class AR_Arm_Fisher_Test
             lastState = currentState;
             currentState = AR_Arm_Fisher.GRAB;
         }
-        updateArmPos();
     }
 
     /**
@@ -164,11 +162,6 @@ public class AR_Arm_Fisher_Test
             lastState = currentState;
             currentState = AR_Arm_Fisher.ACTIVE;
         }
-        updateArmPos();
-
-
-        // Todo: Somehow the power should be set to zero after movement because we don't want to waste battery power holding
-        // the arm in the lowered position. This will only work if the arm has a rest which it doesn't right now.
     }
 
     /**
@@ -184,7 +177,6 @@ public class AR_Arm_Fisher_Test
             lastState = currentState;
             currentState = AR_Arm_Fisher.START;
         }
-        updateArmPos();
     }
     public void setArmMidPos( )
     {
@@ -196,7 +188,6 @@ public class AR_Arm_Fisher_Test
             lastState = currentState;
             currentState = AR_Arm_Fisher.MID;
         }
-        updateArmPos();
     }
 
     public boolean isBusy(){
@@ -207,5 +198,4 @@ public class AR_Arm_Fisher_Test
         bot.telemetry.addData("First Joint: ", (jointFirst.getTelemetry()*(360/5281.1)));
         bot.telemetry.addData("Second Joint: ", (jointSecond.getTelemetry()*(360/5281.1)));
     }
-
 }

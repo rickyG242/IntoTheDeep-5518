@@ -11,7 +11,6 @@ public class TeleOp_Arm_Test extends LinearOpMode
 {
     private AR_Arm_Fisher_Test arm;
 
-
     //@Override
     public void runOpMode()
     {
@@ -23,7 +22,11 @@ public class TeleOp_Arm_Test extends LinearOpMode
 
         while (opModeIsActive())
         {
+            //**************************************************************************************
+            // -------------------- Gamepad 1 Controls ---------------------------------------------
 
+            //**************************************************************************************
+            // -------------------- Gamepad 2 Controls ---------------------------------------------
             if (gamepad2.dpad_up) {
                 arm.setArmDeployPos();
                 telemetry.addData("Arm Status", "Set Arm Deploy");
@@ -44,10 +47,10 @@ public class TeleOp_Arm_Test extends LinearOpMode
                 arm.setArmMidPos();
                 telemetry.addData("Arm Status", "Set Arm Mid");
             }
-            arm.updateArmPos();
 
             //**************************************************************************************
-            // ---------------------Gamepad 2 Controls ---------------------------------------------
+            // -------------------- Robot Systems Updates ------------------------------------------
+            arm.updateArmPos();
 
             //**************************************************************************************
             //--------------------- TELEMETRY Code -------------------------------------------------

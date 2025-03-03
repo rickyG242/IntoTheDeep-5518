@@ -11,7 +11,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  *
  * Creation Date: 11/3/2024
  */
-public class AR_PIDController {
+public class AR_PIDController
+{
     private PIDController controller;
     private double p, i, d;
     private double f;
@@ -58,39 +59,55 @@ public class AR_PIDController {
     /**
      * This function takes a target value and moves the joint to that position.
      */
-    public void loop(double target, int iCurrentState, int iLastState) { // Input in degrees
+    public void loop(double target, int iCurrentState, int iLastState)
+    { // Input in degrees
         if (fuzzyLogicActive) {
             double error = target - (motor.getCurrentPosition() / ticksPerDegree);  // Current error
             double errorRate = error - previousError;  // Calculate error rate
             previousError = error;  // Update previous error value for the next loop iteration
             fuzzyLogicAutotune(error, errorRate);  // Adjust PID parameters using fuzzy logic
         }
+
         this.controller.setPID(p, i, d);
         double armPos = 0;
+
         if (this.jointName.equals("first_joint")) {
             armPos = this.motor.getCurrentPosition() + (AR_Arm_Fisher.FIRST_JOINT_START * ticksPerDegree); // armPos is in Ticks
-        } else if (this.jointName.equals("second_joint")) {
+        }
+        else if (this.jointName.equals("second_joint")) {
             armPos = this.motor.getCurrentPosition() + (AR_Arm_Fisher.SECOND_JOINT_START * ticksPerDegree); // armPos is in Ticks
         }
-        double pid = this.controller.calculate(armPos, target * ticksPerDegree);  // target is in degrees
-        double ff = Math.cos(Math.toRadians(target * ticksPerDegree)) * f;  // Feedforward
+
+        double pid = this.controller.calculate( armPos, target * ticksPerDegree );  // target is in degrees
+        double ff = Math.cos( Math.toRadians( target * ticksPerDegree ) ) * f;  // Feedforward
         double power = pid + ff;  // Total power from PID and feedforward
-        if ((this.jointName.equals("first_joint")) && (iLastState == AR_Arm_Fisher.START) && ((armPos / ticksPerDegree) < target - 10)) {
-            power = power * 0.00;  // Throttle power back for arm descent.
-        }
+
         if ((this.jointName.equals("first_joint")) && (iLastState == AR_Arm_Fisher.DEPLOY) && ((armPos / ticksPerDegree) < target - 10)) {
-            power = power * 0.07;  // Throttle power back for arm descent.
+            power = power * 0.05;  // Throttle power back for arm descent.
         }
-        if ((this.jointName.equals("first_joint")) && (iLastState == AR_Arm_Fisher.ACTIVE) && ((armPos / ticksPerDegree) < target - 10)) {
-            power = power * 0.08;  // Throttle power back for arm descent.
-        }
-        power = power *.75;
+
+// ToDo: Not sure why this code was added...
+//       if ((this.jointName.equals("first_joint")) && (iLastState == AR_Arm_Fisher.START) && ((armPos / ticksPerDegree) < target - 10)) {
+//           power = power * 0.00;
+//       }
+//       if ((this.jointName.equals("first_joint")) && (iLastState == AR_Arm_Fisher.ACTIVE) && ((armPos / ticksPerDegree) < target - 10)) {
+//           power = power * 0.08;
+//       }
+//       power = power *.75;
+
         this.motor.setPower(power);
+
         this.bot.telemetry.addData("Power", " (" + this.jointName + ") " + power);
         this.bot.telemetry.addData("Pos(Ticks)", " (" + this.jointName + ") " + armPos);
         this.bot.telemetry.addData("Pos", " (" + this.jointName + ") " + armPos / ticksPerDegree);
         this.bot.telemetry.addData("Target", " (" + this.jointName + ") " + target);
         this.bot.telemetry.addData("States", iCurrentState + "(" + iLastState + ")");
+
+/*        if( target != 0 ) {
+            double armPosDegrees = ( armPos / ticksPerDegree );
+            Log.i("AR_Experimental", this.jointName + "," + loopCount + "," + armPos + "," + armPosDegrees  + "," + target + "," + pid + "," + ff + "," + power );
+        }
         loopCount = loopCount + 1;
+ */
     }
 }
