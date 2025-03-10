@@ -49,6 +49,9 @@ public class AR_Arm_Fisher
     public static double FIRST_JOINT_MID = -51;
     /** Angle of second Joint Deploy Position */
     public static double SECOND_JOINT_MID = -83;
+    public static double FIRST_JOINT_DEPLOY_1 = 43.08;
+    /** Angle of second Joint Deploy Position */
+    public static double SECOND_JOINT_DEPLOY_1 = 43.57;
 
     public static double P1 = 0.003, I1 = 0.05, D1 = 0.0001;
     public static double F1 = 0.05;
@@ -61,6 +64,7 @@ public class AR_Arm_Fisher
     public static int GRAB = 2;
     public static int DEPLOY = 3;
     public static int MID = 4;
+    public static int DEPLOY_1 = 5;
     public static int NONE = 0;
     public boolean pressed = false;
 
