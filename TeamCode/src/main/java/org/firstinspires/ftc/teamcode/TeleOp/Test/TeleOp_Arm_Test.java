@@ -1,10 +1,7 @@
-package org.firstinspires.ftc.teamcode.TeleOp;
+package org.firstinspires.ftc.teamcode.TeleOp.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-import org.firstinspires.ftc.teamcode.Libs.AR.AR_Arm_Fisher;
-import org.firstinspires.ftc.teamcode.Libs.AR.AR_Arm_Fisher_Test;
 
 @TeleOp(name = "TeleOp_Arm_Test", group = "TeleOp")
 public class TeleOp_Arm_Test extends LinearOpMode

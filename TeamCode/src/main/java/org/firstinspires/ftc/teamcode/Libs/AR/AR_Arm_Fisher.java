@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.Libs.AR.AR_Joint;
+import org.firstinspires.ftc.teamcode.Libs.AR.Archive.AR_Arm;
 
 /**
  * This class create an AR_Arm object that is used to encapsulate all the code used to control and use
@@ -82,6 +83,14 @@ public class AR_Arm_Fisher
     //private TouchSensor touch;
 
     private LinearOpMode bot;
+
+    public AR_Joint getJointFirst() {
+        return jointFirst;
+    }
+    
+    
+
+    
     AR_Light light;
 
     private int lastState = START;
@@ -240,6 +249,7 @@ public class AR_Arm_Fisher
         if( currentState != AR_Arm_Fisher.MID ) {
             lastState = currentState;
             currentState = AR_Arm_Fisher.MID;
+
         }
     }
 
@@ -266,4 +276,18 @@ public class AR_Arm_Fisher
         leftGripper.setPower(0);
         rightGripper.setPower(0);
     }
+    public void setArmAscentStep1(){
+        this.targetFirst = FIRST_JOINT_DEPLOY_1;
+        this.targetSecond = SECOND_JOINT_DEPLOY_1;
+        if (currentState != AR_Arm_Fisher.DEPLOY_1) {
+            lastState = currentState;
+            currentState = AR_Arm_Fisher.DEPLOY_1;
+        }
+            
+    }
+    public void lockInward(){
+        AR_PIDController setJointContinuous ;
+        setJointContinuous.setJointContinuous(true);
+    }
+
 }

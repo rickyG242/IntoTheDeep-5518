@@ -18,7 +18,7 @@ public class AR_PIDController
     private double f;
     private final double ticksPerDegree = 5281.1 / 360;  // For GoBilda 30 RPM Motor
     LinearOpMode bot;
-    private DcMotor motor;
+    public DcMotor motor;
     private String jointName;
     private int loopCount;  // Used for debugging to count the number of PID loops.
     public boolean fuzzyLogicActive = false;
@@ -59,6 +59,13 @@ public class AR_PIDController
     /**
      * This function takes a target value and moves the joint to that position.
      */
+    private void setJointContinuous(boolean direction){
+        if (direction){
+            this.motor.setPower(1);}
+        else{
+            this.motor.setPower(-1);
+        }
+}
     public void loop(double target, int iCurrentState, int iLastState)
     { // Input in degrees
         if (fuzzyLogicActive) {

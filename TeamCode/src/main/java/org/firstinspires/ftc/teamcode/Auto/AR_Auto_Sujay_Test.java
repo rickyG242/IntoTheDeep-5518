@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Libs.AR;
+package org.firstinspires.ftc.teamcode.Auto;
 
 import android.util.Log;
 
@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.TeleOp.Test.AR_Arm_Fisher_Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
