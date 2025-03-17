@@ -1,11 +1,12 @@
-package org.firstinspires.ftc.teamcode.Libs.AR;
+package org.firstinspires.ftc.teamcode.Libs.AR.Archive;
 
 //import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.Libs.AR.AR_Arm_Fisher;
 
 /*--------------------------------------------------------------------------------------------------
  * This is an example OpMode created to show how the AR_Arm Class works, designed for the 2024-2025
@@ -14,7 +15,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Creation Date: 11/3/2024
  ---------------------------------------------------------------------------------------------------
 */
-@TeleOp(name="ArmTestRedo with Lights: Linear OpMode", group="Linear OpMode")
+@TeleOp(name="ArmTestRedo_OpMode_Linear_Fisher", group="Linear OpMode")
 public class ArmTestRedo_OpMode_Linear_Fisher extends LinearOpMode
 {
     // Declare OpMode members.

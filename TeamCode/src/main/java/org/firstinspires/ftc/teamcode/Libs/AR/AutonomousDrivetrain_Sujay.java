@@ -32,7 +32,6 @@
 package org.firstinspires.ftc.teamcode.Libs.AR;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -91,7 +90,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-public class AutonomousDrivetrain {
+public class AutonomousDrivetrain_Sujay {
 
     // initiate all classes we may need
     /* Declare OpMode members. */
@@ -116,11 +115,6 @@ public class AutonomousDrivetrain {
     private int     leftBackTarget    = 0;
     private int     rightFrontTarget   = 0;
     private int     rightBackTarget   = 0;
-
-    private int lastState = AR_Auto.point0;
-    private int currentState = AR_Auto.point0;
-    private int drive;
-    private int turn;
 
     // Calculate the COUNTS_PER_INCH for your specific drive train.
     // Go to your motor vendor website to determine your motor's COUNTS_PER_MOTOR_REV
@@ -148,7 +142,7 @@ public class AutonomousDrivetrain {
     static final double     P_DRIVE_GAIN           = 0.03;     // Larger is more responsive, but also less stable
 
     //@Override
-    public AutonomousDrivetrain(LinearOpMode iBot) {
+    public AutonomousDrivetrain_Sujay(LinearOpMode iBot) {
 
         // Initialize the objects and drive system variables.
 
@@ -200,10 +194,7 @@ public class AutonomousDrivetrain {
         setDriveTrainMode(DcMotor.RunMode.RUN_USING_ENCODER);
         imu.resetYaw();
     }
-
-    public void activateDriveTrainState(){
-        moveRobot(drive, turn);
-    }
+/*
     public void setPoint0(LinearOpMode iBot)
     {   // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
         // Calculates and sets joint angles for setPoint0 state
@@ -229,7 +220,7 @@ public class AutonomousDrivetrain {
         if(AR_Auto.currentState != AR_Auto.point2 ){
             AR_Auto.lastState = AR_Auto.currentState;
             AR_Auto.currentState = AR_Auto.point2;}}
-
+*/
     /*
      * ====================================================================================================
      * Driving "Helper" functions are below this line.
@@ -238,6 +229,7 @@ public class AutonomousDrivetrain {
      */
 
     // **********  HIGH Level driving functions.  ********************
+
 
     /**
      *  Drive in a straight line, on a fixed compass heading (angle), based on encoder counts.
@@ -251,6 +243,7 @@ public class AutonomousDrivetrain {
      *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
      *                   If a relative angle is required, add/subtract from the current robotHeading.
      */
+
     public void driveStraight(LinearOpMode iBot, double maxDriveSpeed,
                               double distance,
                               double heading) {
@@ -278,7 +271,7 @@ public class AutonomousDrivetrain {
             // keep looping while we are still active, and BOTH motors are running.
             while (iBot.opModeIsActive() && (MTR_LF.isBusy() && MTR_LB.isBusy() && MTR_RF.isBusy() && MTR_RB.isBusy())) {
                 // Determine required steering to keep on heading
-                turnSpeed = getSteeringCorrection(heading, P_DRIVE_GAIN);
+                //turnSpeed = getSteeringCorrection(heading, P_DRIVE_GAIN);
                 // if driving in reverse, the motor correction also needs to be reversed
                 if (distance < 0)
                     turnSpeed *= -1.0;

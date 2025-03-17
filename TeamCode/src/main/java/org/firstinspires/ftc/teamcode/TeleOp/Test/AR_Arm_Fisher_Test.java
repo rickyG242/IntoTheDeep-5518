@@ -1,13 +1,10 @@
-package org.firstinspires.ftc.teamcode.Libs.AR;
+package org.firstinspires.ftc.teamcode.TeleOp.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.teamcode.Libs.AR.AR_Arm_Fisher;
 import org.firstinspires.ftc.teamcode.Libs.AR.AR_Joint;
-import org.firstinspires.ftc.teamcode.Libs.AR.Archive.AR_Arm;
 
 /**
  * This class create an AR_Arm object that is used to encapsulate all the code used to control and use
@@ -19,7 +16,7 @@ import org.firstinspires.ftc.teamcode.Libs.AR.Archive.AR_Arm;
  */
 
 
-public class AR_Arm_Fisher
+public class AR_Arm_Fisher_Test
 {
     /** Currently, the arm's rest is at approx. 43 degree up pointing straight down. That mean gravity is
      * working the most against the arm (horizontal) at -47 from the rest. So to make the angle align
@@ -34,26 +31,22 @@ public class AR_Arm_Fisher
     /** Angle of second Joint Starting Position */
     public static double SECOND_JOINT_START = 0;
     /** Angle of first Joint Active Position */
-    public static double FIRST_JOINT_ACTIVE = -100.14623;
+    public static double FIRST_JOINT_ACTIVE = -75;
     /** Angle of second Joint Active Position */
-    public static double SECOND_JOINT_ACTIVE = -54.17841;
+    public static double SECOND_JOINT_ACTIVE = -75;
     /** Angle of first Joint Deploy Position */
-    public static double FIRST_JOINT_DEPLOY = -165;
+    public static double FIRST_JOINT_DEPLOY = -150;
     /** Angle of second Joint Deploy Position */
-    public static double SECOND_JOINT_DEPLOY = -170;
+    public static double SECOND_JOINT_DEPLOY = -145;
     /** Angle of first Joint Grab Position */
-    public static double FIRST_JOINT_GRAB = -36.438735;
+    public static double FIRST_JOINT_GRAB = -75;
     /** Angle of second Joint Grab Position */
-    public static double SECOND_JOINT_GRAB = -107.062584259;
+    public static double SECOND_JOINT_GRAB = -150;
 
     /** Angle of first Joint Deploy Position */
     public static double FIRST_JOINT_MID = -51;
     /** Angle of second Joint Deploy Position */
     public static double SECOND_JOINT_MID = -83;
-    public static double FIRST_JOINT_DEPLOY_1 = 43.08;
-    /** Angle of second Joint Deploy Position */
-
-    public static double SECOND_JOINT_DEPLOY_1 = 43.57;
 
     public static double P1 = 0.003, I1 = 0.05, D1 = 0.0001;
     public static double F1 = 0.05;
@@ -66,7 +59,6 @@ public class AR_Arm_Fisher
     public static int GRAB = 2;
     public static int DEPLOY = 3;
     public static int MID = 4;
-    public static int DEPLOY_1 = 5;
     public static int NONE = 0;
     public boolean pressed = false;
 
@@ -75,23 +67,13 @@ public class AR_Arm_Fisher
     private AR_Joint jointSecond;
 
     // Variables to save the desired angle of the two AR_JOINTs.
-    private double targetFirst;
-    private double targetSecond;
-    private CRServo leftGripper;
-    private CRServo rightGripper;
+    private double targetFirst = FIRST_JOINT_START;
+    private double targetSecond = SECOND_JOINT_START;
+
     private ColorSensor sensor;
     //private TouchSensor touch;
 
     private LinearOpMode bot;
-
-    public AR_Joint getJointFirst() {
-        return jointFirst;
-    }
-    
-    
-
-    
-    AR_Light light;
 
     private int lastState = START;
     private int currentState = START;
@@ -101,63 +83,21 @@ public class AR_Arm_Fisher
      *
      * @param iBot Handle to the LinearOpMode.
      */
-    public AR_Arm_Fisher( LinearOpMode iBot )
+    public AR_Arm_Fisher_Test( LinearOpMode iBot )
     {
         // Take the passed in value and assign to class variables.
         this.bot = iBot;
 
         // Declare instances of the two joints.
-        this.jointFirst = new AR_Joint(this.bot, "first_joint", P1, I1, D1, F1, true);
+        this.jointFirst = new AR_Joint(this.bot, "first_joint", P1, I1, D1, F1, false);
         this.jointSecond = new AR_Joint(this.bot, "second_joint", P2, I2, D2, F2, false);
-        leftGripper = bot.hardwareMap.crservo.get("left_gripper");
-        rightGripper = bot.hardwareMap.crservo.get("right_gripper");
-        this.sensor = bot.hardwareMap.get(ColorSensor.class, "color_sensor");
-        this.light = new AR_Light("status_light", iBot);
+
         // Set FTC Dashboard Telemetry
     }
 
-    public int getDetectedColor() {
-        int red = sensor.red();
-        int green = sensor.green();
-        int blue = sensor.blue();
-
-        if (red > green && red > blue) {
-            return 0; // Red detected
-        } else if (blue > red && blue > green) {
-            return 1; // Blue detected
-        } else if (red > 500 && green > 500 && blue < 500) {
-            return 2; // Yellow detected (Red + Green strong, Blue weak)
-        } else {
-            return -1; // No clear detection
-        }
-    }
-
-    public void turnBlue(){
-        light.blueLight();
-    }
-    public void turnRed(){
-        light.redLight();
-    }
-    public void turnYellow(){
-        light.yellowLight();
-    }
-
-    public void turnGreen(){
-        light.greenLight();
-    }
-
-    public void turnNeutral(){
-        light.policeLights();
-    }
-
-    public void updateLight(){
-        light.updateLight();
-    }
-
-
-        /**
-         * Return immediately and moves the joints to the desired location.
-         */
+    /**
+     * Return immediately and moves the joints to the desired location.
+     */
     public void updateArmPos( )
     {
         // ToDo: I wonder if we need to come up with code to move the joints at different times. For example, maybe we have to move joint 1 20 degrees before moving joint 2 at all.
@@ -220,10 +160,6 @@ public class AR_Arm_Fisher
             lastState = currentState;
             currentState = AR_Arm_Fisher.ACTIVE;
         }
-
-
-        // Todo: Somehow the power should be set to zero after movement because we don't want to waste battery power holding
-        // the arm in the lowered position. This will only work if the arm has a rest which it doesn't right now.
     }
 
     /**
@@ -249,45 +185,15 @@ public class AR_Arm_Fisher
         if( currentState != AR_Arm_Fisher.MID ) {
             lastState = currentState;
             currentState = AR_Arm_Fisher.MID;
-
         }
+    }
+
+    public boolean isBusy(){
+        return (jointFirst.isBusy() && jointSecond.isBusy());
     }
 
     public void getTelemetry(){
         bot.telemetry.addData("First Joint: ", (jointFirst.getTelemetry()*(360/5281.1)));
         bot.telemetry.addData("Second Joint: ", (jointSecond.getTelemetry()*(360/5281.1)));
-        bot.telemetry.addData("Red", sensor.red());
-        bot.telemetry.addData("Blue", sensor.blue());
-        bot.telemetry.addData("Green", sensor.green());
     }
-
-    public void grab()
-    {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
-        leftGripper.setPower(-.2);
-        rightGripper.setPower(.2);
-    }
-    public void drop()
-    {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
-        leftGripper.setPower(.2);
-        rightGripper.setPower(-.2);
-    }
-    public void rest()
-    {// Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
-        leftGripper.setPower(0);
-        rightGripper.setPower(0);
-    }
-    public void setArmAscentStep1(){
-        this.targetFirst = FIRST_JOINT_DEPLOY_1;
-        this.targetSecond = SECOND_JOINT_DEPLOY_1;
-        if (currentState != AR_Arm_Fisher.DEPLOY_1) {
-            lastState = currentState;
-            currentState = AR_Arm_Fisher.DEPLOY_1;
-        }
-            
-    }
-    public void lockInward(){
-        AR_PIDController setJointContinuous ;
-        setJointContinuous.setJointContinuous(true);
-    }
-
 }
