@@ -48,6 +48,9 @@ public class AR_Arm_Fisher_Test
     /** Angle of second Joint Deploy Position */
     public static double SECOND_JOINT_MID = -83;
 
+    public static double FIRST_JOINT_HOOK = -125;
+    /** Angle of second Joint Deploy Position */
+    public static double SECOND_JOINT_HOOK = -150;
     public static double P1 = 0.003, I1 = 0.05, D1 = 0.0001;
     public static double F1 = 0.05;
 
@@ -59,6 +62,7 @@ public class AR_Arm_Fisher_Test
     public static int GRAB = 2;
     public static int DEPLOY = 3;
     public static int MID = 4;
+    public static int HOOK = 5;
     public static int NONE = 0;
     public boolean pressed = false;
 
@@ -186,6 +190,22 @@ public class AR_Arm_Fisher_Test
             lastState = currentState;
             currentState = AR_Arm_Fisher.MID;
         }
+    }
+    public void setArmHookPos( )
+    {
+        // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
+        this.targetFirst = FIRST_JOINT_HOOK;
+        this.targetSecond = SECOND_JOINT_HOOK;
+
+        if( currentState != AR_Arm_Fisher_Test.HOOK ) {
+            lastState = currentState;
+            currentState = AR_Arm_Fisher_Test.HOOK;
+        }
+    }
+
+    public void lockInward(){
+        jointFirst.setJointContinuous(true);
+        jointSecond.setJointContinuous(true);
     }
 
     public boolean isBusy(){

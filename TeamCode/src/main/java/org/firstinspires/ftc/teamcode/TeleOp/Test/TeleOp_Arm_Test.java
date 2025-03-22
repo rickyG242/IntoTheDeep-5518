@@ -44,6 +44,10 @@ public class TeleOp_Arm_Test extends LinearOpMode
                 arm.setArmMidPos();
                 telemetry.addData("Arm Status", "Set Arm Mid");
             }
+            else if (gamepad2.triangle){
+                arm.setArmHookPos();
+                telemetry.addData("Arm Status", "Set Arm Hook");
+            }
 
             //**************************************************************************************
             // -------------------- Robot Systems Updates ------------------------------------------

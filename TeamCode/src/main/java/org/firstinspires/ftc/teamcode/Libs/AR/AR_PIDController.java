@@ -59,7 +59,7 @@ public class AR_PIDController
     /**
      * This function takes a target value and moves the joint to that position.
      */
-    private void setJointContinuous(boolean direction){
+    public void setJointContinuous(boolean direction){
         if (direction){
             this.motor.setPower(1);}
         else{
@@ -92,15 +92,6 @@ public class AR_PIDController
         if ((this.jointName.equals("first_joint")) && (iLastState == AR_Arm_Fisher.DEPLOY) && ((armPos / ticksPerDegree) < target - 10)) {
             power = power * 0.05;  // Throttle power back for arm descent.
         }
-
-// ToDo: Not sure why this code was added...
-//       if ((this.jointName.equals("first_joint")) && (iLastState == AR_Arm_Fisher.START) && ((armPos / ticksPerDegree) < target - 10)) {
-//           power = power * 0.00;
-//       }
-//       if ((this.jointName.equals("first_joint")) && (iLastState == AR_Arm_Fisher.ACTIVE) && ((armPos / ticksPerDegree) < target - 10)) {
-//           power = power * 0.08;
-//       }
-//       power = power *.75;
 
         this.motor.setPower(power);
 

@@ -65,6 +65,10 @@ public class TeleOp_5518_IK extends LinearOpMode
                 arm.setArmMidPos();
                 telemetry.addData("Arm Status", "Set Arm Mid");
             }
+            else if (gamepad2.triangle){
+                arm.setArmHookPos();
+                telemetry.addData("Arm Status", "Set Arm Hook");
+            }
             arm.updateArmPos();
 
             if (gamepad2.left_trigger > 0.1) {

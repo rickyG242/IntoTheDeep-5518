@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.Libs.AR.AR_Joint;
 import org.firstinspires.ftc.teamcode.Libs.AR.Archive.AR_Arm;
+import org.firstinspires.ftc.teamcode.TeleOp.Test.AR_Arm_Fisher_Test;
 
 /**
  * This class create an AR_Arm object that is used to encapsulate all the code used to control and use
@@ -34,25 +35,28 @@ public class AR_Arm_Fisher
     /** Angle of second Joint Starting Position */
     public static double SECOND_JOINT_START = 0;
     /** Angle of first Joint Active Position */
-    public static double FIRST_JOINT_ACTIVE = -100.14623;
+    public static double FIRST_JOINT_ACTIVE = -75;
     /** Angle of second Joint Active Position */
-    public static double SECOND_JOINT_ACTIVE = -54.17841;
+    public static double SECOND_JOINT_ACTIVE = -75;
     /** Angle of first Joint Deploy Position */
-    public static double FIRST_JOINT_DEPLOY = -165;
+    public static double FIRST_JOINT_DEPLOY = -150;
     /** Angle of second Joint Deploy Position */
-    public static double SECOND_JOINT_DEPLOY = -170;
+    public static double SECOND_JOINT_DEPLOY = -145;
     /** Angle of first Joint Grab Position */
-    public static double FIRST_JOINT_GRAB = -36.438735;
+    public static double FIRST_JOINT_GRAB = -75;
     /** Angle of second Joint Grab Position */
-    public static double SECOND_JOINT_GRAB = -107.062584259;
+    public static double SECOND_JOINT_GRAB = -140;
 
     /** Angle of first Joint Deploy Position */
     public static double FIRST_JOINT_MID = -51;
     /** Angle of second Joint Deploy Position */
     public static double SECOND_JOINT_MID = -83;
+
+    public static double FIRST_JOINT_HOOK = -125;
+    /** Angle of second Joint Deploy Position */
+    public static double SECOND_JOINT_HOOK = -150;
     public static double FIRST_JOINT_DEPLOY_1 = 43.08;
     /** Angle of second Joint Deploy Position */
-
     public static double SECOND_JOINT_DEPLOY_1 = 43.57;
 
     public static double P1 = 0.003, I1 = 0.05, D1 = 0.0001;
@@ -66,7 +70,7 @@ public class AR_Arm_Fisher
     public static int GRAB = 2;
     public static int DEPLOY = 3;
     public static int MID = 4;
-    public static int DEPLOY_1 = 5;
+    public static int HOOK = 5;
     public static int NONE = 0;
     public boolean pressed = false;
 
@@ -87,10 +91,7 @@ public class AR_Arm_Fisher
     public AR_Joint getJointFirst() {
         return jointFirst;
     }
-    
-    
 
-    
     AR_Light light;
 
     private int lastState = START;
@@ -107,7 +108,7 @@ public class AR_Arm_Fisher
         this.bot = iBot;
 
         // Declare instances of the two joints.
-        this.jointFirst = new AR_Joint(this.bot, "first_joint", P1, I1, D1, F1, true);
+        this.jointFirst = new AR_Joint(this.bot, "first_joint", P1, I1, D1, F1, false);
         this.jointSecond = new AR_Joint(this.bot, "second_joint", P2, I2, D2, F2, false);
         leftGripper = bot.hardwareMap.crservo.get("left_gripper");
         rightGripper = bot.hardwareMap.crservo.get("right_gripper");
@@ -220,10 +221,6 @@ public class AR_Arm_Fisher
             lastState = currentState;
             currentState = AR_Arm_Fisher.ACTIVE;
         }
-
-
-        // Todo: Somehow the power should be set to zero after movement because we don't want to waste battery power holding
-        // the arm in the lowered position. This will only work if the arm has a rest which it doesn't right now.
     }
 
     /**
@@ -249,8 +246,23 @@ public class AR_Arm_Fisher
         if( currentState != AR_Arm_Fisher.MID ) {
             lastState = currentState;
             currentState = AR_Arm_Fisher.MID;
-
         }
+    }
+    public void setArmHookPos( )
+    {
+        // Todo: This needs to be carefully tested before we run the code to make sure the motor direction is correct, etc.
+        this.targetFirst = FIRST_JOINT_HOOK;
+        this.targetSecond = SECOND_JOINT_HOOK;
+
+        if( currentState != AR_Arm_Fisher_Test.HOOK ) {
+            lastState = currentState;
+            currentState = AR_Arm_Fisher_Test.HOOK;
+        }
+    }
+
+    public void lockInward(){
+        jointFirst.setJointContinuous(true);
+        jointSecond.setJointContinuous(true);
     }
 
     public void getTelemetry(){
@@ -276,18 +288,4 @@ public class AR_Arm_Fisher
         leftGripper.setPower(0);
         rightGripper.setPower(0);
     }
-    public void setArmAscentStep1(){
-        this.targetFirst = FIRST_JOINT_DEPLOY_1;
-        this.targetSecond = SECOND_JOINT_DEPLOY_1;
-        if (currentState != AR_Arm_Fisher.DEPLOY_1) {
-            lastState = currentState;
-            currentState = AR_Arm_Fisher.DEPLOY_1;
-        }
-            
-    }
-    public void lockInward(){
-        AR_PIDController setJointContinuous ;
-        setJointContinuous.setJointContinuous(true);
-    }
-
 }
